@@ -23,7 +23,7 @@
 <!--     <typeAliases> -->
 <!--         <package name="com.ssafy.safefood.hrm"/> -->
 <!--     </typeAliases> -->
-    <mappers>
+    <!-- <mappers>
         <mapper resource="mapper/humor.xml"/>
-    </mappers>
+    </mappers> -->
 </configuration>
