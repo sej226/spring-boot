@@ -24,6 +24,6 @@
 <!--         <package name="com.ssafy.safefood.hrm"/> -->
 <!--     </typeAliases> -->
     <mappers>
-        <mapper resource="mapper/qanda.xml"/>
+        <mapper resource="mapper/humor.xml"/>
     </mappers>
 </configuration>
