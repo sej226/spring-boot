@@ -23,7 +23,7 @@
 		SELECT
 		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
 		FROM humor
-		WHERE humorID LIKE  '%${value}%'
+		WHERE humorID LIKE '%${value}%'
 	</select>
 	
 	<!-- 제목으로 검색 -->
