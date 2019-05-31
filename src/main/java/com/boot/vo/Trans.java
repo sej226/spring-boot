@@ -10,6 +10,13 @@ public class Trans {
 	
 	public Trans() {}
 	
+	public Trans(int transPK, int dW, String moeny) {
+		super();
+		this.transPK = transPK;
+		DW = dW;
+		this.moeny = moeny;
+	}
+	
 	public Trans(int transPK, int dW, String moeny, Date transDate) {
 		super();
 		this.transPK = transPK;

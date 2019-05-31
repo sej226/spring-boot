@@ -18,31 +18,31 @@ public class TransDAOImpl implements TransDAO{
 	SqlSession sqlSession;
 	
 	@Override
-	public boolean addTrans(Trans trans) {
+	public boolean addTrans(Trans trans) throws Exception{
 		int rows = sqlSession.insert(ns+"addTrans", trans);
 		if(rows <= 0) return false;
 		return true;
 	}
 
 	@Override
-	public boolean deleteTrans(int transPK) {
+	public boolean deleteTrans(int transPK) throws Exception{
 		int rows = sqlSession.delete(ns+"deleteTrans", transPK);
 		if(rows <= 0) return false;
 		return true;
 	}
 
 	@Override
-	public List<Trans> selectAllTrans() {
+	public List<Trans> selectAllTrans() throws Exception{
 		return sqlSession.selectList(ns+"selectAllTrans");
 	}
 
 	@Override
-	public List<Trans> selectTransByDeposit(boolean DW) {
+	public List<Trans> selectTransByDeposit(boolean DW) throws Exception{
 		return sqlSession.selectList(ns+"selectTransByDeposit", DW);
 	}
 
 	@Override
-	public List<Trans> selectTransByWithdraw(boolean DW) {
+	public List<Trans> selectTransByWithdraw(boolean DW) throws Exception{
 		return sqlSession.selectList(ns+"selectTransByWithdraw", DW);
 	}
 

@@ -5,8 +5,8 @@ import java.util.List;
 import com.boot.vo.Humorreply;
 
 public interface HumorreplyDAO {
-	public boolean addHumorReply(Humorreply humorreply);
-	public boolean deleteHumorReply(int humorReplyPK);
-	public boolean updateHumorReply(Humorreply humorreply);
-	public List<Humorreply> selectAllHumorReply();
+	public boolean addHumorReply(Humorreply humorreply) throws Exception;
+	public boolean deleteHumorReply(int humorReplyPK) throws Exception;
+	public boolean updateHumorReply(Humorreply humorreply) throws Exception;
+	public List<Humorreply> selectAllHumorReply() throws Exception;
 }

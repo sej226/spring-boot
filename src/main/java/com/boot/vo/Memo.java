@@ -12,6 +12,15 @@ public class Memo {
 	
 	public Memo() {}
 	
+	public Memo(String memoPK, String receiverID, String senderID, String memoTitle, String memoContent) {
+		super();
+		this.memoPK = memoPK;
+		this.receiverID = receiverID;
+		this.senderID = senderID;
+		this.memoTitle = memoTitle;
+		this.memoContent = memoContent;
+	}
+	
 	public Memo(String memoPK, String receiverID, String senderID, String memoTitle, String memoContent,
 			Date memoDate) {
 		super();

@@ -11,6 +11,14 @@ public class Humorreply {
 	
 	public Humorreply() {}
 	
+	public Humorreply(int humorReplyPK, int humorPK, String humorReplyID, String humorReplyContent) {
+		super();
+		this.humorReplyPK = humorReplyPK;
+		this.humorPK = humorPK;
+		this.humorReplyID = humorReplyID;
+		this.humorReplyContent = humorReplyContent;
+	}
+	
 	public Humorreply(int humorReplyPK, int humorPK, String humorReplyID, String humorReplyContent,
 			Date humorReplyDate) {
 		super();

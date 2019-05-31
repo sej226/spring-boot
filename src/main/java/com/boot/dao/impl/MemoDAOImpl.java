@@ -18,26 +18,26 @@ public class MemoDAOImpl implements MemoDAO{
 	SqlSession sqlSession;
 
 	@Override
-	public boolean sendMemo(Memo memo) {
+	public boolean sendMemo(Memo memo) throws Exception{
 		int rows = sqlSession.insert(ns+"sendMemo", memo);
 		if(rows <= 0) return false;
 		return true;
 	}
 
 	@Override
-	public boolean deleteMemo(int memoPK) {
+	public boolean deleteMemo(int memoPK) throws Exception{
 		int rows = sqlSession.delete(ns+"deleteMemo", memoPK);
 		if(rows <= 0) return false;
 		return true;
 	}
 
 	@Override
-	public List<Memo> selectMemoByReceiverID(String id) {
+	public List<Memo> selectMemoByReceiverID(String id) throws Exception{
 		return sqlSession.selectList(ns+"selectMemoByReceiverID", id);
 	}
 
 	@Override
-	public Memo selectMemoByMemoPK(int memoPK) {
+	public Memo selectMemoByMemoPK(int memoPK) throws Exception{
 		return sqlSession.selectOne(ns+"selectMemoByMemoPK", memoPK);
 	}
 }
