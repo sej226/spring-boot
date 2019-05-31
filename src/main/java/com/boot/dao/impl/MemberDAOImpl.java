@@ -5,16 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.boot.dao.MemberDAO;
-import com.boot.dao.memberDAO;
 import com.boot.vo.Member;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO{
 
+	@Autowired
+	SqlSession sqlSession;
+	
 	@Override
 	public void addMember(Member member) {
-		// TODO Auto-generated method stub
-		
+		sqlSession.insert("MemberMapper.addMember", member);
 	}
 
 	@Override
