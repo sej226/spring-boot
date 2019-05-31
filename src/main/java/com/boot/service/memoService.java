@@ -1,5 +1,5 @@
 package com.boot.service;
 
-public class memoService {
+public interface memoService {
 
 }

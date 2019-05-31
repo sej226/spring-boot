@@ -1,5 +1,5 @@
 package com.boot.dao;
 
-public class memoDAO {
+public interface memoDAO {
 
 }

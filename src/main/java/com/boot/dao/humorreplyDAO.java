@@ -1,5 +1,5 @@
 package com.boot.dao;
 
-public class humorreplyDAO {
+public interface humorreplyDAO {
 
 }
