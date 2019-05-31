@@ -13,6 +13,17 @@ public class Humor {
 	
 	public Humor() {}
 	
+	public Humor(int humorPK, String humorID, String humorTitle, String humorContent,int humorCount,
+			String humorImgURL) {
+		super();
+		this.humorPK = humorPK;
+		this.humorID = humorID;
+		this.humorTitle = humorTitle;
+		this.humorContent = humorContent;
+		this.humorCount = humorCount;
+		this.humorImgURL = humorImgURL;
+	}
+	
 	public Humor(int humorPK, String humorID, String humorTitle, String humorContent, Date humorDate, int humorCount,
 			String humorImgURL) {
 		super();

@@ -40,7 +40,7 @@ public class HumorDAOImpl implements HumorDAO{
 
 	@Override
 	public List<Humor> selectAllHumor() {
-		return sqlSession.selectList(ns+"selectAllHumor");
+		return sqlSession.selectList(ns + "selectAllHumor");
 	}
 
 	@Override
