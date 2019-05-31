@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> SSAFY 2반 게시판 </title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+	<h2 align="center"> hello world</h2>
+	<div id="app">
+		<div v-for="index in info">
+			<h2 v-html="index.title"></h2>
+			<p v-html="index.content"></p>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+	var app = new Vue({
+		el:"#app",
+		  data:{
+			  info : [],
+		      errored : false,
+		      loading : true
+		    },
+		    mounted () {
+		        axios
+		        .get('/api/selectAllHumor')
+		         .then(response => (this.info = response.data))
+		         .catch(error => {
+		             console.log(error)
+		             alert(error)
+		             this.errored = true
+		         })
+		         .finally(() => this.loading = false)
+		   }
+		});
+	</script>
+</body>
+</html>
