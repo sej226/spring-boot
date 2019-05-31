@@ -6,5 +6,9 @@
 <configuration>
      <mappers>
         <mapper resource="mapper/humor.xml"/>
+        <mapper resource="mapper/humorReply.xml"/>
+        <mapper resource="mapper/member.xml"/>
+        <mapper resource="mapper/memo.xml"/>
+        <mapper resource="mapper/trans.xml"/>
     </mappers> 
 </configuration>

@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ public class BootboardApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		SqlSession sqlsession ;
 	}
 
 }

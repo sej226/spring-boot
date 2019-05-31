@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.TransDAO">
+
+	<insert id="addTrans" parameterType="com.boot.vo.Trans">
+		INSERT
+		INTO trans
+		VALUES (#{DW}, #{money}, #{transDate})
+	</insert>
+	
+	<delete id="deleteTrans" parameterType="string">
+		DELETE
+		FROM member
+		WHERE id = #{value}
+	</delete>
+	
+	<select id="selectAllTrans" resultType="com.boot.vo.Trans">
+		SELECT
+		DW, money, transDate
+		FROM trans
+	</select>
+	
+	<select id="selectTransByDeposit" resultType="com.boot.vo.Trans">
+		SELECT
+		receiverID, senderID, memoTitle, memoContent, memoDate
+		FROM memo
+		WHERE DW = #{value}
+	</select>
+	
+	<select id="selectTransByWithdraw" resultType="com.boot.vo.Trans">
+		SELECT
+		receiverID, senderID, memoTitle, memoContent, memoDate
+		FROM memo
+		WHERE DW = #{value}
+	</select>
+	
+</mapper>
+

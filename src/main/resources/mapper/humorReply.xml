@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.HumorreplyDAO">
+	 <!-- 댓글 등록 -->
+	<insert id="addHumorReply" parameterType="com.boot.vo.Humorreply">
+		INSERT
+		INTO humorreply
+		VALUES(0, #{humorPK}, #{id}, #{content}, curdate())
+	</insert>
+	
+	<select id="selectAllHumorReply" resultType="com.boot.vo.Humorreply">
+		SELECT
+		humorReplyPK, humorPK, humorReplyID, humorReplyContent, humorReplyDate
+		FROM humorreply
+	</select>
+	
+	<delete id="deleteHumorReply" parameterType="int">
+		DELETE
+		FROM humorreply
+		WHERE humorReplyPK= #{value}
+	</delete>
+	
+	<update id="updateHumorReply"  parameterType="com.boot.vo.Humorreply">
+		UPDATE
+		humorreply
+		SET
+			humorReplyID= #{id}, 
+			humorReplyContent= #{content},  
+			humorReplyDate= curdate()
+		WHERE humorReplyPK= #{humorReplyPK}
+	</update>
+</mapper>
+

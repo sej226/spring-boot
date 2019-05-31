@@ -3,7 +3,82 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.boot.dao.humorDAO">
-
+<mapper namespace="com.boot.dao.HumorDAO">
+	<!-- 게시글 등록 -->
+	<insert id="addHumor" parameterType="com.boot.vo.Humor">
+		INSERT
+		INTO humor
+		VALUES (0,#{humorID}, #{humorTitle}, #{humorContent}, curdate(), 0, #{humorImgURL})
+	</insert>
+	
+	<!--게시글 조회  -->
+	<select id="selectAllHumor" resultType="com.boot.vo.Humor">
+		SELECT 
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+	</select>
+	
+	<!-- 아이디로  검색 -->
+	<select id="selectHumorByID" resultType="com.boot.vo.Humor" parameterType="string">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		WHERE humorID LIKE  '%${value}%'
+	</select>
+	
+	<!-- 제목으로 검색 -->
+	<select id="selectHumorByTitle" resultType="com.boot.vo.Humor" parameterType="string">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		WHERE humorTitle LIKE '%${value}%'
+	</select>
+	
+	<!-- 내용으로 검색 -->
+	<select id="selectHumorByContent" resultType="com.boot.vo.Humor" parameterType="string">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		WHERE humorContent  Like  '%${value}%'
+	</select>
+	
+	<!-- 번호로 검색 -->
+	<select id="selectHumorByNum" resultType="com.boot.vo.Humor" parameterType="int">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		WHERE humorPK = #{humorPK}
+	</select>
+	
+	<!-- 오늘 게시글 검색 -->
+	<select id="selectHumorByToday" resultType="com.boot.vo.Humor">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		WHERE humorDate= curdate()
+	</select>
+	
+	<!--  조회수 랭킹-->
+	<select id="selectHumorByRank" resultType="com.boot.vo.Humor">
+		SELECT
+		humorPK, humorID, humorTitle, humorContent, humorDate, humorCount, humorImgURL
+		FROM humor
+		ORDER BY humorCount
+		LIMIT 0,10
+	</select>
+	
+	<delete id="deleteHumor" parameterType="int">
+		DELETE
+		FROM humor
+		WHERE humorPK = #{value}
+	</delete>
+	
+	<update id="updateHumor"  parameterType="com.boot.vo.Humor">
+		UPDATE humor
+		SET humorTitle = #{title}, 
+			humorContent = #{content},  
+			humorDate = curdate()
+		WHERE humorPK = #{humorPK}
+	</update>
 </mapper>
 
