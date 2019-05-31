@@ -1,13 +1,15 @@
 package com.boot.dao;
 
+import java.util.List;
+
 import com.boot.vo.Member;
 
 public interface MemberDAO {
-	public void addMember(Member member);
-	public void deleteMember();
-	public void updateMember(Member member);
-	public void selectAllMember(); // 전체 검색
-	public void selectMemberByID(String id); // 아이디로 검색
-	public void selectHumorByName(String name); // 이름으로 검색
-	public void selectHumorByGrade(String grade); // 등급으로 검색
+	public boolean addMember(Member member);
+	public boolean deleteMember(String id);
+	public boolean updateMember(Member member);
+	public List<Member> selectAllMember(); // 전체 검색
+	public Member selectMemberByID(String id); // 아이디로 검색
+	public List<Member> selectHumorByName(String name); // 이름으로 검색
+	public List<Member> selectHumorByGrade(String grade); // 등급으로 검색
 }
