@@ -15,7 +15,7 @@ public class TransDAOImpl implements TransDAO{
 	private String ns ="com.boot.dao.TransDAO.";
 	
 	@Autowired
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	@Override
 	public boolean addTrans(Trans trans) throws Exception{

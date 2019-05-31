@@ -15,7 +15,7 @@ public class MemoDAOImpl implements MemoDAO{
 	private String ns ="com.boot.dao.MemoDAO.";
 	
 	@Autowired
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 
 	@Override
 	public boolean sendMemo(Memo memo) throws Exception{

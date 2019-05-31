@@ -15,7 +15,7 @@ public class HumorDAOImpl implements HumorDAO{
 	private String ns ="com.boot.dao.HumorDAO.";
 	
 	@Autowired
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	@Override
 	public boolean addHumor(Humor humor) throws Exception{

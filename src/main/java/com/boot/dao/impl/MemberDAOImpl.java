@@ -15,7 +15,7 @@ public class MemberDAOImpl implements MemberDAO{
 	private String ns ="com.boot.dao.MemberDAO.";
 	
 	@Autowired
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	
 	@Override
