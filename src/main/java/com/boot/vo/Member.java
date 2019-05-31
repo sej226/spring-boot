@@ -1,14 +1,14 @@
 package com.boot.vo;
 
-public class member {
+public class Member {
 	private String id;
 	private String password;
 	private String name;
 	private String grade;
 	
-	public member() {}
+	public Member() {}
 	
-	public member(String id, String password, String name, String grade) {
+	public Member(String id, String password, String name, String grade) {
 		super();
 		this.id = id;
 		this.password = password;

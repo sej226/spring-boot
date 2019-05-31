@@ -1,5 +1,5 @@
 package com.boot.service.impl;
 
-public class memoServiceImpl {
+public class HumorreplyServiceImpl {
 
 }

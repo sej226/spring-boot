@@ -2,15 +2,15 @@ package com.boot.vo;
 
 import java.sql.Date;
 
-public class trans {
+public class Trans {
 	private int transPK;
 	private int DW;
 	private String moeny;
 	private Date transDate;
 	
-	public trans() {}
+	public Trans() {}
 	
-	public trans(int transPK, int dW, String moeny, Date transDate) {
+	public Trans(int transPK, int dW, String moeny, Date transDate) {
 		super();
 		this.transPK = transPK;
 		DW = dW;

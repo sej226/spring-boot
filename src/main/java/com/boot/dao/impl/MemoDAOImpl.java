@@ -1,5 +1,5 @@
 package com.boot.dao.impl;
 
-public class transDAOImpl {
+public class MemoDAOImpl {
 
 }

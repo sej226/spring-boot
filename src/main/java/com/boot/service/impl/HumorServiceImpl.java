@@ -1,5 +1,5 @@
 package com.boot.service.impl;
 
-public class transServiceImpl {
+public class HumorServiceImpl {
 
 }

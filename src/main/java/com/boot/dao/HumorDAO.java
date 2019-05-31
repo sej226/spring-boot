@@ -1,5 +1,5 @@
 package com.boot.dao;
 
-public interface memberDAO {
+public interface HumorDAO {
 
 }

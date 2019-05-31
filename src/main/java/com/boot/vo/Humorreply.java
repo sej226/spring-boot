@@ -2,16 +2,16 @@ package com.boot.vo;
 
 import java.sql.Date;
 
-public class humorreply {
+public class Humorreply {
 	private int humorReplyPK;
 	private int humorPK;
 	private String humorReplyID;
 	private String humorReplyContent;
 	private Date humorReplyDate;
 	
-	public humorreply() {}
+	public Humorreply() {}
 	
-	public humorreply(int humorReplyPK, int humorPK, String humorReplyID, String humorReplyContent,
+	public Humorreply(int humorReplyPK, int humorPK, String humorReplyID, String humorReplyContent,
 			Date humorReplyDate) {
 		super();
 		this.humorReplyPK = humorReplyPK;

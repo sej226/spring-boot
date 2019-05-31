@@ -1,5 +1,5 @@
 package com.boot.dao;
 
-public interface memoDAO {
+public interface TransDAO {
 
 }

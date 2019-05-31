@@ -2,7 +2,7 @@ package com.boot.vo;
 
 import java.sql.Date;
 
-public class humor {
+public class Humor {
 	private int humorPK;
 	private String humorID;
 	private String humorTitle;
@@ -11,9 +11,9 @@ public class humor {
 	private int humorCount;
 	private String humorImgURL;
 	
-	public humor() {}
+	public Humor() {}
 	
-	public humor(int humorPK, String humorID, String humorTitle, String humorContent, Date humorDate, int humorCount,
+	public Humor(int humorPK, String humorID, String humorTitle, String humorContent, Date humorDate, int humorCount,
 			String humorImgURL) {
 		super();
 		this.humorPK = humorPK;

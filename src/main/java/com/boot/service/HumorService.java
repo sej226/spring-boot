@@ -1,5 +1,5 @@
 package com.boot.service;
 
-public interface memberService {
+public interface HumorService {
 
 }

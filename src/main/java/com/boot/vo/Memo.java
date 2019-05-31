@@ -2,7 +2,7 @@ package com.boot.vo;
 
 import java.sql.Date;
 
-public class memo {
+public class Memo {
 	private String memoPK;
 	private String receiverID;
 	private String senderID;
@@ -10,9 +10,9 @@ public class memo {
 	private String memoContent;
 	private Date memoDate;
 	
-	public memo() {}
+	public Memo() {}
 	
-	public memo(String memoPK, String receiverID, String senderID, String memoTitle, String memoContent,
+	public Memo(String memoPK, String receiverID, String senderID, String memoTitle, String memoContent,
 			Date memoDate) {
 		super();
 		this.memoPK = memoPK;

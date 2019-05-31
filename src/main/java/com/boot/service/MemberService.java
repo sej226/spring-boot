@@ -1,5 +1,5 @@
 package com.boot.service;
 
-public interface transService {
+public interface MemberService {
 
 }

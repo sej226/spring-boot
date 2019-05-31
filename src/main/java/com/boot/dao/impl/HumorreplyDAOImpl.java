@@ -1,5 +1,5 @@
 package com.boot.dao.impl;
 
-public class memberDAOImpl {
+public class HumorreplyDAOImpl {
 
 }
