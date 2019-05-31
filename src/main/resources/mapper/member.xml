@@ -30,21 +30,21 @@
 		FROM member
 	</select>
 	
-	<select id="selectMemberByID" resultType="com.boot.vo.Member">
+	<select id="selectMemberByID" resultType="com.boot.vo.Member" parameterType="string">
 		SELECT
 		id, name, grade
 		FROM member
 		WHERE id = #{value}		
 	</select>
 	
-	<select id="selectHumorByName" resultType="com.boot.vo.Member">
+	<select id="selectHumorByName" resultType="com.boot.vo.Member" parameterType="string">
 		SELECT
 		id, name, grade
 		FROM member
 		WHERE name = #{value}
 	</select>
 	
-	<select id="selectHumorByGrade" resultType="com.boot.vo.Member">
+	<select id="selectHumorByGrade" resultType="com.boot.vo.Member" parameterType="string">
 		SELECT
 		id, name, grade
 		FROM member

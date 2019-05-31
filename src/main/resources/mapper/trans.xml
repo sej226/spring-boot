@@ -23,14 +23,14 @@
 		FROM trans
 	</select>
 	
-	<select id="selectTransByDeposit" resultType="com.boot.vo.Trans">
+	<select id="selectTransByDeposit" resultType="com.boot.vo.Trans" parameterType="boolean">
 		SELECT
 		receiverID, senderID, memoTitle, memoContent, memoDate
 		FROM memo
 		WHERE DW = #{value}
 	</select>
 	
-	<select id="selectTransByWithdraw" resultType="com.boot.vo.Trans">
+	<select id="selectTransByWithdraw" resultType="com.boot.vo.Trans"  parameterType="boolean">
 		SELECT
 		receiverID, senderID, memoTitle, memoContent, memoDate
 		FROM memo
