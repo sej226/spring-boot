@@ -1,21 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title> SSAFY 2반 게시판 </title>
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 </head>
-<body>
-	<h2 align="center"> hello world</h2>
-	<div id="app">
-		<div v-for="index in info">
-			<h2 v-html="index.humorTitle"></h2>
-			<p v-html="index.humorContent"></p>
-		</div>
-	</div>
+<body class="container">
+	<div  id="app">
 	
-	<script type="text/javascript">
+	
+    <div class="jumbotron">
+        <h2>스프링 부트 게시판</h2>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>글 번호</th>
+            <th>글쓴이</th>
+            <th>글 제목</th>
+        </tr>
+		<tr v-for="text in info">
+			<td v-html="text.humorPK"></td>
+			<td v-html="text.humorID"></td>
+			<td v-html="text.humorTitle"></td>
+		</tr>
+        <tr th:each="i: ${#numbers.sequence(1, 10)}">
+            <td th:text="${i}"></td>
+            <td th:text="글쓴이 + ${i}"></td>
+            <td th:text="제목 + ${i}"></td>
+        </tr>
+    </table>
+
+
+    <nav style="text-align: center;">
+        <ul class="pagination">
+            <li class="disabled">
+                <a href="#" aria-label="First">
+                    <span aria-hidden="true">First</span>
+                </a>
+            </li>
+            <li class="disabled">
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" aria-label="Last">
+                    <span aria-hidden="true">Last</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    </div>
+    <script type="text/javascript">
 	var app = new Vue({
 		el:"#app",
 		  data:{
