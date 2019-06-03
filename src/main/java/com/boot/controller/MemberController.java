@@ -23,42 +23,14 @@ import com.boot.vo.Member;
 
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @Controller
-@RequestMapping("/api")
-public class MainController {
-	public static final Logger logger = LoggerFactory.getLogger(MainController.class);
-	
-	@Autowired
-	private HumorService  humorService;
-
-	@RequestMapping(value = "/addHumor", method = RequestMethod.POST)
-	public ResponseEntity<BoolResult> addHumor(@RequestBody Humor humor) throws Exception {
-		logger.info("1. -------------addHumor-------------"+humor+" : "+new Date());
-
-		boolean total = humorService.addHumor(humor);
-		BoolResult nr = new BoolResult();
-		nr.setCount(total);
-		nr.setName("addHumor");
-		nr.setState("success");
-		if (!total) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/selectAllHumor", method = RequestMethod.GET)
-	public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
-		logger.info("1.-------------selectAllHumor-------------"+new Date());
-		List<Humor> humors = humorService.selectAllHumor();
-		if (humors.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Humor>>(humors, HttpStatus.OK);
-	}
+@RequestMapping("/member")
+public class MemberController {
+	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
 	private MemberService  memberService;
 
-	@RequestMapping(value = "/addMember", method = RequestMethod.PUT)
+	@RequestMapping(value = "/addMember", method = RequestMethod.POST)
 	public ResponseEntity<BoolResult> addMember(@RequestBody Member member) throws Exception {
 		logger.info("1. -------------addMember-------------"+member+" : "+new Date());
 
