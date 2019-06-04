@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body class="container">
+<div id="regDiv">
+<form method="post" @submit.prevent="addMember">
+ID : <input type="text" id="id" placeholder="Input ID" name="id" v-model="id" required="required"><br>
+PW : <input type="password" id="password" placeholder="Input Password" name="password" v-model="password" required="required"><br>
+NAME : <input type="text" id="name" placeholder="Input Name" name="name" v-model="name" required="required"><br>
+<input type="submit" value="가입">
+</form>
+</div>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"#regDiv",
+		  data:{
+			  info : [],
+		      errored : false,
+		      loading : true,
+		      id : '',
+		      password : '',
+		      name : ''
+		    },
+		    methods: {
+		    	addMember : function(){
+				      axios
+				      .put('/api/addMember',{
+				    	  id : this.id,
+				    	  password : this.password,
+				    	  name : this.name
+				      })
+				      .then(function(response){
+				           if(response.data.state=='succ'){
+				              alert("실행되었습니다.");
+				           }else{
+				              alert("실패하였습니다.");
+				           }
+				       })
+				}
+		   }
+		});
+</script>
+</body>
+</html>
