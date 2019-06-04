@@ -6,84 +6,252 @@
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+	<!--  라우터 라이브러리 추가   -->
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 </head>
 <body class="container">
-	<div  id="app">
+	<div id = 'app'>
+		<router-link to = "/route1" id = "route">게시글 조회</router-link>
+		
+		<router-view></router-view>
+	</div>
 	
-	
-    <div class="jumbotron">
-        <h2>스프링 부트 게시판</h2>
-    </div>
+	<script type="text/x-template" id = "allHumorTemplate">
+		<div>
+		<div class="jumbotron">
+	        <h2>스프링 부트 게시판</h2>
+	    </div>
 
-    <table class="table">
-        <tr>
-            <th>글 번호</th>
-            <th>글쓴이</th>
-            <th>글 제목</th>
-        </tr>
-		<tr v-for="text in info">
-			<td v-html="text.humorPK"></td>
-			<td v-html="text.humorID"></td>
-			<td v-html="text.humorTitle"></td>
+		<table class="table">
+	        <tr>
+	            <th>글 번호</th>
+	            <th>글쓴이</th>
+	            <th>글 제목</th>
+	        </tr>
+			<tr v-for="text in info">
+				<td v-html="text.humorPK"></td>
+				<td v-html="text.humorID"></td>
+				<router-link v-bind:to = "{path:'route2?pk='+ text.humorPK}" > 
+				<td v-html="text.humorTitle"></td> </router-link>
+			</tr>
+
+	        <tr th:each="i: ${#numbers.sequence(1, 10)}">
+	            <td th:text="${i}"></td>
+	            <td th:text="글쓴이 + ${i}"></td>
+	            <td th:text="제목 + ${i}"></td>
+	        </tr>
+	    </table>
+		
+		<nav style="text-align: center;">
+	        <ul class="pagination">
+	            <li class="disabled">
+	                <a href="#" aria-label="First">
+	                    <span aria-hidden="true">First</span>
+	                </a>
+	            </li>
+	            <li class="disabled">
+	                <a href="#" aria-label="Previous">
+	                    <span aria-hidden="true">&lt;</span>
+	                </a>
+	            </li>
+	            <li class="active"><a href="#">1</a></li>
+	            <li><a href="#">2</a></li>
+	            <li><a href="#">3</a></li>
+	            <li><a href="#">4</a></li>
+	            <li><a href="#">5</a></li>
+	            <li>
+	                <a href="#" aria-label="Next">
+	                    <span aria-hidden="true">&gt;</span>
+	                </a>
+	            </li>
+	            <li>
+	                <a href="#" aria-label="Last">
+	                    <span aria-hidden="true">Last</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+</div>
+	</script>
+	
+	<script type="text/x-template" id="detailTemplate">
+	<div>
+		<div class="jumbotron">
+	        <h2>스프링 부트 게시판</h2>
+	    </div>
+ 	<table class="table">
+		<tr>
+			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>
 		</tr>
-        <tr th:each="i: ${#numbers.sequence(1, 10)}">
-            <td th:text="${i}"></td>
-            <td th:text="글쓴이 + ${i}"></td>
-            <td th:text="제목 + ${i}"></td>
-        </tr>
-    </table>
+  	    <tr>
+			<th style="font-size: 20px;">작성자</th><td ><p v-html="humor.humorID"></p></td>
+		</tr>
+ 		<tr>
+			<th style="font-size: 20px;">내용</th><td ><p v-html="humor.humorContent"></p></td>
+ 		</tr>
+  	</table>
+	<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+	<a v-on:click="deleteH"> 삭제  |  </a>	
+</div>
 
-
-    <nav style="text-align: center;">
-        <ul class="pagination">
-            <li class="disabled">
-                <a href="#" aria-label="First">
-                    <span aria-hidden="true">First</span>
-                </a>
-            </li>
-            <li class="disabled">
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="Last">
-                    <span aria-hidden="true">Last</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    </div>
+	</script>
+	
+	<script type="text/x-template" id="updateTemplate">
+	<div>
+		<div class="jumbotron">
+			<h3 align="center" style="color: black;" >질문 수정</h3>
+	    </div>
+		
+    	<div class="col-lg-7 mx-auto">
+			<form  method = "post"  @submit.prevent="updateH">
+            	<div class="control-group">
+              		<div class="form-group floating-label-form-group controls mb-0 pb-2">
+                		<label>ID</label>
+               			<input type = "text" class="form-control" name = "userId" v-model="cuserId" disabled="disabled" >
+                		<p class="help-block text-danger"></p>
+              		</div>
+            		</div>
+            		<div class="control-group">
+              			<div class="form-group floating-label-form-group controls mb-0 pb-2">
+                			<label>Title</label>
+                			<input  class="form-control" type = "text" name = "humorTitle" v-model="hTitle"  placeholder="Title" required="required" data-validation-required-message="Please enter title.">
+               				<p class="help-block text-danger"></p>
+              			</div>
+            		</div>
+            		<div class="control-group">
+              			<div class="form-group floating-label-form-group controls mb-0 pb-2">
+                			<label>Content</label>
+                			<input class="form-control" type = "text" name = "humorContent" v-model="hContent" placeholder="Content" required="required" data-validation-required-message="Please enter content.">
+                			<p class="help-block text-danger"></p>
+              			</div>
+            		</div><br>
+            		 
+						<button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton" value = "게시글 수정"> Edit</button>
+          		</form>
+        </div>
+	</div>
+	</script>
+	
+	
+	 
     <script type="text/javascript">
-	var app = new Vue({
-		el:"#app",
-		  data:{
-			  info : [],
-		      errored : false,
-		      loading : true
-		    },
-		    mounted () {
-		        axios
-		        .get('/api/selectAllHumor')
-		         .then(response => (this.info = response.data))
-		         .catch(error => {
-		             console.log(error)
-		             alert(error)
-		             this.errored = true
-		         })
-		         .finally(() => this.loading = false)
-		   }
-		});
+    
+	var allHumor = Vue.component('allHumor', {
+		template: '#allHumorTemplate',
+		data(){
+			return{
+			 	info : [],
+			 	loading: true,
+		        errored: false 
+			}			
+	    },
+	    mounted () {
+	    	axios
+	        .get('/api/selectAllHumor')
+	        .then(response => (this.info = response.data))
+	         .catch(error => {
+	             console.log(error)
+	             alert(error)
+	             this.errored = true
+	         })
+	         .finally(() => this.loading = false)
+	   }
+	});
+		
+	var datailHumor = Vue.component('datailHumor',{
+	    template: '#detailTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          pk : (window.location.href).split('=')[1],
+	          humor : null
+	        }
+	      },
+	      mounted () {
+            axios
+	  		    .get('/api/selectHumorByNum/' + this.pk)
+	  		    .then(response => (this.humor = response.data))
+	  		    .catch(error => {
+	  		      console.log(error)
+	  		      this.errored = true
+	  		    })
+	  		    .finally(() => this.loading = false);
+        	},
+        	 methods: {
+	      	 	deleteH() {
+		      		 axios
+			      		 .delete('/api/deleteHumor/' + this.pk)
+			      		 .catch(error => {
+				      		 console.log(error)
+				      		 this.errored = true
+			      		 })
+			      		 .finally(() => this.loading = false);
+			      			router.push('/route2');
+			      	 	}
+	      		 } 
+      	  	});	
+	
+	var updateHumor = Vue.component('updateHumor',{
+	    template: '#updateTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          pk : (window.location.href).split('=')[1],
+	          humor : null,
+	          hTitle : '',
+	          hContent : ''
+	        }
+	      },
+	      mounted () {
+	            axios
+	  		    .get('/api/selectHumorByNum/' + this.pk)
+	  		    .then(response => (this.humor = response.data))
+	  		    .catch(error => {
+	  		      console.log(error)
+	  		      this.errored = true
+	  		    })
+	  		    .finally(() => this.loading = false);
+         },
+	      methods: {
+             updateH(){
+                 axios.post('/api/updateHumor',{
+                	humorPK : this.humor.humorPK,
+                	humorID : this.humor.humorID,
+                	humorTitle : this.hTitle,
+                	humorContent: this.hContent,
+                	humorDate : this.humor.humorDate,
+                	humorCount : this.humor.humorCount,
+                	humorImgURL : this.humor.humorImgURL
+                  })
+                  .then(function(response){
+                	  router.push('/route1');
+                      alert(response.data.total+"이 실행되었습니다.");
+                  })
+             	}
+	         }
+        });	
+		
+	const routes = [  
+	   { path: '/route1', component: allHumor },
+	   { path: '/route2', component: datailHumor },
+	   { path: '/route3', component: updateHumor },
+	   /* { path: '/route4', component: findByTitle },
+	   { path: '/route5', component: findDetail },
+	   { path: '/route6', component: createA},
+	   { path: '/route7', component: updateQ} */ 
+	];
+	
+	const router = new VueRouter({
+	   routes   
+	});
+	
+	var App=new Vue({
+	  el: '#app',
+	  router
+	})
+	//
 	</script>
 </body>
 </html>

@@ -75,8 +75,8 @@
 	
 	<update id="updateHumor"  parameterType="com.boot.vo.Humor">
 		UPDATE humor
-		SET humorTitle = #{title}, 
-			humorContent = #{content},  
+		SET humorTitle = #{humorTitle}, 
+			humorContent = #{humorContent},  
 			humorDate = curdate()
 		WHERE humorPK = #{humorPK}
 	</update>

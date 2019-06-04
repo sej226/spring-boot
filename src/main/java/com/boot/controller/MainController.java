@@ -42,7 +42,6 @@ public class MainController {
 		}
 		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
 	}
-	
 	@RequestMapping(value = "/selectAllHumor", method = RequestMethod.GET)
 	public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
 		logger.info("1.-------------selectAllHumor-------------"+new Date());
@@ -51,6 +50,46 @@ public class MainController {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Humor>>(humors, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/selectHumorByNum/{humorPK}", method = RequestMethod.GET)
+	public ResponseEntity<Humor> selectHumorByNum(@PathVariable int humorPK) throws Exception{
+		logger.info("-------------selectHumorByNum-------------"+new Date());
+		Humor humor = humorService.selectHumorByNum(humorPK);
+		if(humor == null) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Humor>(humor, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/updateHumor", method = RequestMethod.POST)
+	public void updateHumor(@RequestBody Humor humor) throws Exception{
+		logger.info("-------------updateHumor-------------" + new Date());
+		Humor h = humorService.selectHumorByNum(humor.getHumorPK());
+		System.out.println(h);
+		System.out.println(humor);
+		boolean flag = humorService.updateHumor(humor);
+		System.out.println(humor);
+		if(!flag) {
+			System.out.println("Empty!!!");
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+//		return new ResponseEntity<Humor>(humor, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/deleteHumor/{humorPK}", method = RequestMethod.DELETE)
+	public void deleteH(@PathVariable int humorPK) throws Exception {
+		logger.info("-------------deleteHumor-----------------------------"+new Date());
+		
+		boolean flag = humorService.deleteHumor(humorPK);
+		System.out.println(flag + "삭제 결과!");
+	}
+	
+	@RequestMapping(value = "/createHumor", method = RequestMethod.PUT)
+	public void createA(@RequestBody Humor humor) throws Exception {
+		logger.info("-------------createA-----------------------------"+new Date());
+		boolean flag= humorService.addHumor(humor);
+	
 	}
 	
 	/*

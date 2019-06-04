@@ -30,12 +30,14 @@ public class BootboardApplicationTests {
 		
 //		Humor humor = new Humor(0, "sej96226@gmail.com", "시험 공부 열심히 합시다.", "!그래 좋아", 0, "img01.jpg");
 //		session.insert("com.boot.dao.HumorDAO.addHumor", humor);
-		session.delete("com.boot.dao.HumorDAO.deleteHumor", 8);
+		/*session.delete("com.boot.dao.HumorDAO.deleteHumor", 8);
 		List<Humor> list = session.selectList("com.boot.dao.HumorDAO.selectAllHumor");
 		for(Humor h : list) {
 			System.out.println(h);
-		}
-		
+		}*/
+		Humor humor = new Humor(0, null, "수정?", "!수정", 0, "img");
+		session.update("com.boot.dao.HumorDAO.updateHumor", humor);
+		System.out.println(humor);
 		
 	}
 
