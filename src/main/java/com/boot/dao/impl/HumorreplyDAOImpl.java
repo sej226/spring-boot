@@ -42,4 +42,9 @@ public class HumorreplyDAOImpl implements HumorreplyDAO{
 	public List<Humorreply> selectAllHumorReply() throws Exception{
 		return sqlSession.selectList(ns+"selectAllHumorReply");
 	}
+
+	@Override
+	public List<Humorreply> selectAllHumorReplyByNum(int pk) throws Exception {
+		return sqlSession.selectList(ns+"selectAllHumorReplyByNum", pk);
+	}
 }

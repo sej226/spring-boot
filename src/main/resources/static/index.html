@@ -12,27 +12,35 @@
 <body class="container">
 	<div id = 'app'>
 		<router-link to = "/route1" id = "route">게시글 조회</router-link>
-		
 		<router-view></router-view>
 	</div>
-	
 	<script type="text/x-template" id = "allHumorTemplate">
 		<div>
 		<div class="jumbotron">
 	        <h2>스프링 부트 게시판</h2>
 	    </div>
-
+		<select v-model="selected">
+    		<option disabled value="">Please select one</option>
+    		<option>ID</option>
+    		<option>TITLE</option>
+    		<option>CONTENT</option>
+  		</select>
+		<span><input type="text"  v-model="inputStr"/></span>
+		<span> <router-link v-bind:to = "{path:'route5?select='+ selected + '&input=' + inputStr}" > 검 색 </router-link> </span>
+		<br><br>
 		<table class="table">
 	        <tr>
 	            <th>글 번호</th>
 	            <th>글쓴이</th>
 	            <th>글 제목</th>
+	            <th>작성 날짜</th>
 	        </tr>
 			<tr v-for="text in info">
 				<td v-html="text.humorPK"></td>
 				<td v-html="text.humorID"></td>
 				<router-link v-bind:to = "{path:'route2?pk='+ text.humorPK}" > 
 				<td v-html="text.humorTitle"></td> </router-link>
+				<td v-html="text.humorDate"></td>
 			</tr>
 
 	        <tr th:each="i: ${#numbers.sequence(1, 10)}">
@@ -72,7 +80,6 @@
 	        </ul>
 	    </nav>
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
-	
 </div>
 	</script>
 	<!-- <router-link v-bind:to = "{path:route4}" > 글 작성  | </router-link> -->
@@ -81,7 +88,7 @@
 		<div class="jumbotron">
 	        <h2>스프링 부트 게시판</h2>
 	    </div>
- 	<table class="table">
+ 		<table class="table">
 		<tr>
 			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>
 		</tr>
@@ -91,18 +98,38 @@
  		<tr>
 			<th style="font-size: 20px;">내용</th><td ><p v-html="humor.humorContent"></p></td>
  		</tr>
-  	</table>
-	<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
-	<a v-on:click="deleteH"> 삭제  |  </a>	
+  		</table>
+		<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+		<a v-on:click="deleteH"> 삭제   </a><hr>	
+	
+	<div>
+		<input type="text" v-model="inputReply" placeholder="댓글을 입력하세요."/>
+		 
+	</div>
+	여기에 댓글 나온다 {{inputReply}}
+	<br><br>
+	<a v-on:click="allReply">댓글 조회</a> <br><hr>
+ 
+	<div v-if="reply != null">
+		<table class="table">
+			<tr v-for="r in reply">
+				<img src="./img/user.png" width="45px" height="45px">
+				<td v-html="r.humorReplyID"></td>
+				<td v-html="r.humorReplyContent"></td>
+				<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+				<a v-on:click="deleteH"> 삭제   </a><hr>
+			</tr>
+	    </table>
+			
+	</div>
 </div>
 	</script>
-	
+	 
 	<script type="text/x-template" id="updateTemplate">
 	<div>
 		<div class="jumbotron">
 			<h3 align="center" style="color: black;" >질문 수정</h3>
 	    </div>
-		
     	<div class="col-lg-7 mx-auto">
 			<form  method = "post"  @submit.prevent="updateH">
             	<div class="control-group">
@@ -126,27 +153,93 @@
                 			<p class="help-block text-danger"></p>
               			</div>
             		</div><br>
-            		 
 						<button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton" value = "게시글 수정"> Edit</button>
           		</form>
         </div>
 	</div>
 	</script>
+	<script type="text/x-template" id="findTemplate">
+  		<div>
+		<div class="jumbotron">
+	        <h2>스프링 부트 게시판</h2>
+	    </div>
+		<select v-model="selected">
+    		<option disabled value="">Please select one</option>
+    		<option>ID</option>
+    		<option>TITLE</option>
+    		<option>CONTENT</option>
+  		</select>
+		<span><input type="text"  v-model="inputStr"/></span>
+		<span> <router-link v-bind:to = "{path:'route5?select='+ selected + '&input=' + inputStr}" > 검 색 </router-link> </span>
+		<br><br>
+		<table class="table">
+	        <tr>
+	            <th>글 번호</th>
+	            <th>글쓴이</th>
+	            <th>글 제목</th>
+	            <th>작성 날짜</th>
+	        </tr>
+			<tr v-for="text in findList">
+				<td v-html="text.humorPK"></td>
+				<td v-html="text.humorID"></td>
+				<router-link v-bind:to = "{path:'route2?pk='+ text.humorPK}" > 
+				<td v-html="text.humorTitle"></td> </router-link>
+				<td v-html="text.humorDate"></td>
+			</tr>
+
+	        <tr th:each="i: ${#numbers.sequence(1, 10)}">
+	            <td th:text="${i}"></td>
+	            <td th:text="글쓴이 + ${i}"></td>
+	            <td th:text="제목 + ${i}"></td>
+	        </tr>
+	    </table>
+		
+		<nav style="text-align: center;">
+	        <ul class="pagination">
+	            <li class="disabled">
+	                <a href="#" aria-label="First">
+	                    <span aria-hidden="true">First</span>
+	                </a>
+	            </li>
+	            <li class="disabled">
+	                <a href="#" aria-label="Previous">
+	                    <span aria-hidden="true">&lt;</span>
+	                </a>
+	            </li>
+	            <li class="active"><a href="#">1</a></li>
+	            <li><a href="#">2</a></li>
+	            <li><a href="#">3</a></li>
+	            <li><a href="#">4</a></li>
+	            <li><a href="#">5</a></li>
+	            <li>
+	                <a href="#" aria-label="Next">
+	                    <span aria-hidden="true">&gt;</span>
+	                </a>
+	            </li>
+	            <li>
+	                <a href="#" aria-label="Last">
+	                    <span aria-hidden="true">Last</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
+	</div>
+	</script>
 	
 	<script type= "text/x-template" id = "createTemplate">
-<div>
-<form method = "post" id = "_frmForm" name = "frmForm" @submit.prevent="createH">
-   <fieldset>
-   <legend>질문등록 :</legend>
-   아이디 : <input type = "text" name = "humorID" v-model="hID "><br><br>
-   제목 : <input type = "text" name = "humorTitle" v-model="hTitle "><br><br>
-   내용 : <input type = "text" name = "humorContent" v-model="hContent "><br><br>
-	<button type="submit" name = "button">질문 등록</button>   
-   </fieldset>
-</form>
-
-</div>
-</script>
+	<div>
+		<form method = "post" id = "_frmForm" name = "frmForm" @submit.prevent="createH">
+ 	 	 <fieldset>
+  		 <legend>질문등록 :</legend>
+  		아이디 : <input type = "text" name = "humorID" v-model="hID "><br><br>
+   		제목 : <input type = "text" name = "humorTitle" v-model="hTitle "><br><br>
+  		 내용 : <input type = "text" name = "humorContent" v-model="hContent "><br><br>
+			<button type="submit" name = "button">질문 등록</button>   
+  		 </fieldset>
+		</form>
+	</div>
+	</script>
     
     <script type="text/javascript">
 	var allHumor = Vue.component('allHumor', {
@@ -155,7 +248,8 @@
 			return{
 			 	info : [],
 			 	loading: true,
-		        errored: false 
+		        errored: false,
+		        selected : ''
 			}			
 	    },
 	    mounted () {
@@ -178,7 +272,8 @@
 	          loading: true,
 	          errored: false,
 	          pk : (window.location.href).split('=')[1],
-	          humor : null
+	          humor : null,
+	          reply : []
 	        }
 	      },
 	      mounted () {
@@ -200,10 +295,20 @@
 				      		 this.errored = true
 			      		 })
 			      		 .finally(() => this.loading = false);
-			      			router.push('/route2');
-			      	 	}
-	      		 } 
-      	  	});	
+			      			router.push('/route1');
+			      	 	},
+			    allReply() {
+		      				axios
+		      		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
+		      		        .then(response => (this.reply = response.data))
+		      		         .catch(error => {
+		      		             console.log(error)
+		      		             this.errored = true
+		      		         })
+		      		         .finally(() => this.loading = false)
+		      	}
+        	 }
+        	});	
 	
 	var updateHumor = Vue.component('updateHumor',{
 	    template: '#updateTemplate',
@@ -218,14 +323,14 @@
 	        }
 	      },
 	      mounted () {
-	            axios
+	    	  axios
 	  		    .get('/api/selectHumorByNum/' + this.pk)
 	  		    .then(response => (this.humor = response.data))
 	  		    .catch(error => {
 	  		      console.log(error)
 	  		      this.errored = true
 	  		    })
-	  		    .finally(() => this.loading = false);
+	  		    .finally(() => this.loading = false); 
          },
 	      methods: {
              updateH(){
@@ -253,12 +358,15 @@
 	          loading: true,
 	          errored: false,
 	          humor : null,
+	          pk : (window.location.href).split('=')[1],
 	          hID : '',
 	          hTitle : '',
 	          hContent : '',
 	          hDate : '',
 	          hCount : 0,
-	          humorImgURL : ''
+	          humorImgURL : '',
+	          inputReply : '',
+	          rDate : ''
 	        }
 	      },
 	      methods: {
@@ -278,19 +386,78 @@
     	                  alert(response.data.total+"에 실패하였습니다.");
     	               }
                   })
+             	},
+             addReply() {
+             		axios.post('/api/createReply',{
+             			humorPK : this.pk,
+             			humorReplyID : this.hID,
+             			humorReplyContent : this.inputReply,
+             			humorReplyDate: this.rDate
+                      })
+                      .then(function(response){
+                    	  if(response.data.state=='succ'){
+        	                  alert(response.data.total+"이 실행되었습니다.");
+        	               }else{
+        	                  alert(response.data.total+"에 실패하였습니다.");
+        	               }
+                      })
              	}
 	         }
+	         
         });	
 	
+	var findHumor = Vue.component('findHumor',{
+	    template: '#findTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          findList : [],
+	          selected : (window.location.href).split('select=')[1]
+	        }
+	      },
+	      mounted () {
+	          axios
+	          	.get('/api/selectHumor/' + this.selected)
+	            .then(response => (this.findList = response.data))
+	            .catch(error => {
+	              console.log(error)
+	              this.errored = true
+	            })
+	            .finally(() => this.loading = false)
+	        } 
+	});
+	
+	/* var allReply = Vue.component('allReply', {
+		template: '#allReplyTemplate',
+		data(){
+			return{
+			 	reply : [],
+			 	loading: true,
+		        errored: false,
+		        pk : (window.location.href).split('=')[1]
+			}			
+	    },
+	    mounted () {
+	    	axios
+	        .get('/api/selectAllHumorReplyByNum/' + this.pk)
+	        .then(response => (this.reply = response.data))
+	         .catch(error => {
+	             console.log(error)
+	             alert(error)
+	             this.errored = true
+	         })
+	         .finally(() => this.loading = false)
+	   }
+	}); */
 	
 	const routes = [  
 	   { path: '/route1', component: allHumor },
 	   { path: '/route2', component: datailHumor },
 	   { path: '/route3', component: updateHumor },
-	   { path: '/route4', component: createHumor }
-	   /*{ path: '/route5', component: findDetail },
-	   { path: '/route6', component: createA},
-	   { path: '/route7', component: updateQ} */ 
+	   { path: '/route4', component: createHumor },
+	   { path: '/route5', component: findHumor }
+	  /*  { path: '/route6', component: allReply } */
 	];
 	
 	const router = new VueRouter({
@@ -301,7 +468,6 @@
 	  el: '#app',
 	  router
 	})
-	//
 	</script>
 </body>
 </html>

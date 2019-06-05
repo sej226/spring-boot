@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.boot.service.HumorService;
+import com.boot.service.HumorreplyService;
 import com.boot.vo.BoolResult;
 import com.boot.vo.Humor;
+import com.boot.vo.Humorreply;
 
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @Controller
@@ -28,6 +30,9 @@ public class MainController {
    
    @Autowired
    private HumorService  humorService;
+   
+   @Autowired
+   private HumorreplyService humorreplyService;
 
   /* @RequestMapping(value = "/addHumor", method = RequestMethod.POST)
    public ResponseEntity<BoolResult> addHumor(@RequestBody Humor humor) throws Exception {
@@ -99,14 +104,62 @@ public class MainController {
       boolean flag= humorService.addHumor(humor);
    }
    
-   @RequestMapping(value = "/selectHumorByID/{id}", method =  RequestMethod.GET)
-   public ResponseEntity<List<Humor>> selectHumorByID(@PathVariable String id) throws Exception {
-      logger.info("-------------selectHumorByID-------------"+new Date());
-      List<Humor> humors = humorService.selectHumorByID(id);
-      System.out.println(humors);
+   @RequestMapping(value = "/selectHumor/{selected}", method =  RequestMethod.GET)
+   public ResponseEntity<List<Humor>> selectHumor(@PathVariable String selected) throws Exception {
+      logger.info("-------------selectHumor-------------"+new Date());
+      System.out.println(selected + " 선택한거!");
+      String[] select = selected.split("&");
+//      for(int i = 0; i < select.length; i++)
+//    	  System.out.println(select[i]);
+      
+      String[] inputStr = select[1].split("=");
+//      for(int i = 0; i < inputStr.length; i++)
+//    	  System.out.println(inputStr[i]);
+      
+      List<Humor> humors = null;
+      if(select[0].equals("ID")) {
+    	  humors = humorService.selectHumorByID(inputStr[1]);
+    	  System.out.println(humors);
+      }else  if(select[0].equals("TITLE"))  {
+    	  humors = humorService.selectHumorByTitle(inputStr[1]);
+    	  System.out.println(humors);
+      }else if(select[0].equals("CONTENT")) {
+    	  humors = humorService.selectHumorByContent(inputStr[1]);
+      }
+      
       if (humors.isEmpty()) {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
       }
       return new ResponseEntity<List<Humor>>(humors, HttpStatus.OK);
+   }
+   
+   /*@RequestMapping(value = "/selectAllHumorReply", method =  RequestMethod.GET)
+   public ResponseEntity<List<Humorreply>> selectAllHumorReply() throws Exception {
+      logger.info("-------------selectAllHumorReply-------------"+new Date());
+      List<Humorreply> humorReply = humorreplyService.selectAllHumorReply();
+      System.out.println(humorReply);
+      if (humorReply.isEmpty()) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<List<Humorreply>>(humorReply, HttpStatus.OK);
+   }*/
+   
+   @RequestMapping(value = "/selectAllHumorReplyByNum/{pk}", method =  RequestMethod.GET)
+   public ResponseEntity<List<Humorreply>> selectAllHumorReplyByNum(@PathVariable int pk) throws Exception {
+      logger.info("-------------selectAllHumorReplyByNum-------------"+new Date());
+      List<Humorreply> humorReply = humorreplyService.selectAllHumorReplyByNum(pk);
+      System.out.println(humorReply);
+      if (humorReply.isEmpty()) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<List<Humorreply>>(humorReply, HttpStatus.OK);
+   }
+   
+   @RequestMapping(value = "/createReply", method = RequestMethod.POST)
+   public void createReply(@RequestBody Humorreply humorreply) throws Exception {
+      logger.info("-------------createReply-----------------------------"+new Date());
+      System.out.println(humorreply);
+      
+      boolean flag= humorreplyService.addHumorReply(humorreply);
    }
 }

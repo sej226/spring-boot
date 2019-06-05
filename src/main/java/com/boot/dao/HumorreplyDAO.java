@@ -9,4 +9,5 @@ public interface HumorreplyDAO {
 	public boolean deleteHumorReply(int humorReplyPK) throws Exception;
 	public boolean updateHumorReply(Humorreply humorreply) throws Exception;
 	public List<Humorreply> selectAllHumorReply() throws Exception;
+	public List<Humorreply> selectAllHumorReplyByNum(int pk) throws Exception;
 }

@@ -17,6 +17,13 @@
 		FROM humorreply
 	</select>
 	
+	<select id="selectAllHumorReplyByNum" resultType="com.boot.vo.Humorreply" parameterType="int">
+		SELECT
+		humorReplyPK, humorPK, humorReplyID, humorReplyContent, humorReplyDate
+		FROM humorreply
+		WHERE humorPK = #{value}
+	</select>
+	
 	<delete id="deleteHumorReply" parameterType="int">
 		DELETE
 		FROM humorreply
