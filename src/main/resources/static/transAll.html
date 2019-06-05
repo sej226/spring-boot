@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>학급비</title>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body class="container">
+<div id="app">
+	<div>
+		<div class="jumbotron">
+	        <h2>학급비 현황</h2>
+	    </div>
+
+		<table class="table">
+	        <tr>
+	            <th>번호</th>
+	            <th>입,출금</th>
+	            <th>금액</th>
+	            <th>날짜</th>
+	        </tr>
+	        
+			<tr v-for="trans in info">
+				<td v-html="trans.transPK"></td>
+				<td v-if="trans.dw == 0">입금</td>
+				<td v-if="trans.dw == 1">출금</td> 
+				<td v-html="trans.money"></td>
+				<td v-html="trans.transDate"></td>
+				<p v-model="trans.sum"></p>
+			</tr>
+			
+	        <tr th:each="i: ${#numbers.sequence(1, 10)}">
+	            <td th:text="${i}"></td>
+	            <td th:text="글쓴이 + ${i}"></td>
+	            <td th:text="제목 + ${i}"></td>
+	        </tr>
+	    </table>
+		<h2 align="center" v-html="sum"></h2>
+		<nav style="text-align: center;">
+	        <ul class="pagination">
+	            <li class="disabled">
+	                <a href="#" aria-label="First">
+	                    <span aria-hidden="true">First</span>
+	                </a>
+	            </li>
+	            <li class="disabled">
+	                <a href="#" aria-label="Previous">
+	                    <span aria-hidden="true">&lt;</span>
+	                </a>
+	            </li>
+	            <li class="active"><a href="#">1</a></li>
+	            <li><a href="#">2</a></li>
+	            <li><a href="#">3</a></li>
+	            <li><a href="#">4</a></li>
+	            <li><a href="#">5</a></li>
+	            <li>
+	                <a href="#" aria-label="Next">
+	                    <span aria-hidden="true">&gt;</span>
+	                </a>
+	            </li>
+	            <li>
+	                <a href="#" aria-label="Last">
+	                    <span aria-hidden="true">Last</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+</div>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+	el:"#app",
+	data(){
+		return{
+		 	info : [],
+		 	loading: true,
+	        errored: false,
+	        sum : 0
+		}			
+    },
+    mounted () {
+    	axios
+        .get('/trans/all')
+        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+   }
+});
+</script>
+</body>
+</html>

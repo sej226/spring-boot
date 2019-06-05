@@ -31,13 +31,13 @@ public class TransServiceImpl implements TransService{
 	}
 
 	@Override
-	public List<Trans> selectTransByDeposit(boolean DW) throws Exception{
-		return transDAO.selectTransByDeposit(DW);
+	public List<Trans> selectTransByDeposit(int dw) throws Exception{
+		return transDAO.selectTransByDeposit(dw);
 	}
 
 	@Override
-	public List<Trans> selectTransByWithdraw(boolean DW) throws Exception{
-		return transDAO.selectTransByWithdraw(DW);
+	public List<Trans> selectTransByWithdraw(int dw) throws Exception{
+		return transDAO.selectTransByWithdraw(dw);
 	}
 
 }

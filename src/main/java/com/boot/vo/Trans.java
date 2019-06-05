@@ -4,25 +4,28 @@ import java.sql.Date;
 
 public class Trans {
 	private int transPK;
-	private int DW;
-	private String moeny;
+	private int dw;
+	private String money;
 	private Date transDate;
+	private int sum;
 	
 	public Trans() {}
 	
-	public Trans(int transPK, int dW, String moeny) {
+	public Trans(int transPK, int dw, String moeny, int sum) {
 		super();
 		this.transPK = transPK;
-		DW = dW;
-		this.moeny = moeny;
+		this.dw = dw;
+		this.money = moeny;
+		this.sum = sum;
 	}
 	
-	public Trans(int transPK, int dW, String moeny, Date transDate) {
+	public Trans(int transPK, int dw, String moeny, Date transDate, int sum) {
 		super();
 		this.transPK = transPK;
-		DW = dW;
-		this.moeny = moeny;
+		this.dw = dw;
+		this.money = moeny;
 		this.transDate = transDate;
+		this.sum = sum;
 	}
 	
 	public int getTransPK() {
@@ -31,17 +34,17 @@ public class Trans {
 	public void setTransPK(int transPK) {
 		this.transPK = transPK;
 	}
-	public int getDW() {
-		return DW;
+	public int getDw() {
+		return dw;
 	}
-	public void setDW(int dW) {
-		DW = dW;
+	public void setDw(int dw) {
+		this.dw = dw;
 	}
-	public String getMoeny() {
-		return moeny;
+	public String getMoney() {
+		return money;
 	}
-	public void setMoeny(String moeny) {
-		this.moeny = moeny;
+	public void setMoney(String money) {
+		this.money = money;
 	}
 	public Date getTransDate() {
 		return transDate;
@@ -50,9 +53,17 @@ public class Trans {
 		this.transDate = transDate;
 	}
 
+	public int getSum() {
+		return sum;
+	}
+
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+
 	@Override
 	public String toString() {
-		return "trans [transPK=" + transPK + ", DW=" + DW + ", moeny=" + moeny + ", transDate=" + transDate + "]";
+		return "trans [transPK=" + transPK + ", dw=" + dw + ", money=" + money + ", transDate=" + transDate + "]";
 	}
 	
 	

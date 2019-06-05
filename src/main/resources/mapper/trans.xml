@@ -8,18 +8,18 @@
 	<insert id="addTrans" parameterType="com.boot.vo.Trans">
 		INSERT
 		INTO trans
-		VALUES (#{DW}, #{money}, #{transDate})
+		VALUES (0, #{dw}, #{money}, #{transDate})
 	</insert>
 	
 	<delete id="deleteTrans" parameterType="string">
 		DELETE
-		FROM member
+		FROM trans
 		WHERE id = #{value}
 	</delete>
 	
 	<select id="selectAllTrans" resultType="com.boot.vo.Trans">
 		SELECT
-		DW, money, transDate
+		transPK, DW, money, transDate
 		FROM trans
 	</select>
 	

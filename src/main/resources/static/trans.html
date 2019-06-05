@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+<div id="app">
+	<h2>학급비 입력</h2>
+	<form method="post" @submit.prevent="addTrans">
+		<select v-model="dw" id = "dw" name = "dw"> 
+			<option value="0" style="color: red;">입금</option>
+			<option value="1" style="color: blue;">출금</option>
+		</select><br>
+		<input type="number" v-model="money" id = "money" name = "money">원<br>
+		<input type="date" v-model="transDate" id = "transDate" name = "transDate"><br>
+		<input type="submit" value="입력">	
+	</form>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+	el:"#app",
+	  data:{
+	      info : [],
+	      errored : false,
+	      loading : true,
+	      dw : 1,
+	      money : '',
+	      transDate : ''
+	 },
+	 methods: {
+		 addTrans(){
+			 axios
+		        .post('http://localhost:7788/trans/add', {
+		        	dw : this.dw,
+		            money : this.money,
+		            transDate : this.transDate
+		          })
+		        .then(function(response){
+		            if(response.data.state=='succ'){
+		               alert(response.data.name+"이 실행되었습니다.");
+		               //location.href='./QandA.html';
+		            }else{
+		               alert(response.data.name+"에 실패하였습니다.");
+		               //location.href='./QandA.html';
+		            }
+		        }) 
+		 }
+   }
+});	
+</script>
+</body>
+</html>

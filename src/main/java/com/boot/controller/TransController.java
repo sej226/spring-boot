@@ -33,12 +33,37 @@ public class TransController {
 		BoolResult nr = new BoolResult();
 		nr.setCount(total);
 		nr.setName("addTrans");
-		nr.setState("success");
+		nr.setState("succ");
 		if(!total) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public ResponseEntity<List<Trans>> allTrans() throws Exception{
+		logger.info("1. -------------allTrans------------- : "+new Date());
+		
+		List<Trans> trans = transService.selectAllTrans();
+		int sum = 0;
+		for(Trans money : trans) {
+			if(money.getDw() == 0) { // 입금
+				sum += Integer.parseInt(money.getMoney());
+			}
+			if(money.getDw() == 1) { // 출금
+				sum -= Integer.parseInt(money.getMoney());
+			}
+		}
+		for(Trans money : trans) {
+			money.setSum(sum);
+		}
+		
+		if (trans.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Trans>>(trans, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test() throws Exception{
 		logger.info("1. -------------test------------- : "+new Date());

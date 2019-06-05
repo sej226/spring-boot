@@ -37,13 +37,13 @@ public class TransDAOImpl implements TransDAO{
 	}
 
 	@Override
-	public List<Trans> selectTransByDeposit(boolean DW) throws Exception{
-		return sqlSession.selectList(ns+"selectTransByDeposit", DW);
+	public List<Trans> selectTransByDeposit(int dw) throws Exception{
+		return sqlSession.selectList(ns+"selectTransByDeposit", dw);
 	}
 
 	@Override
-	public List<Trans> selectTransByWithdraw(boolean DW) throws Exception{
-		return sqlSession.selectList(ns+"selectTransByWithdraw", DW);
+	public List<Trans> selectTransByWithdraw(int dw) throws Exception{
+		return sqlSession.selectList(ns+"selectTransByWithdraw", dw);
 	}
 
 }
