@@ -71,9 +71,11 @@
 	            </li>
 	        </ul>
 	    </nav>
+	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
+	
 </div>
 	</script>
-	
+	<!-- <router-link v-bind:to = "{path:route4}" > 글 작성  | </router-link> -->
 	<script type="text/x-template" id="detailTemplate">
 	<div>
 		<div class="jumbotron">
@@ -93,8 +95,6 @@
 	<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
 	<a v-on:click="deleteH"> 삭제  |  </a>	
 </div>
-
-<<<<<<< HEAD
 	</script>
 	
 	<script type="text/x-template" id="updateTemplate">
@@ -133,46 +133,22 @@
 	</div>
 	</script>
 	
-	
-	 
-=======
+	<script type= "text/x-template" id = "createTemplate">
+<div>
+<form method = "post" id = "_frmForm" name = "frmForm" @submit.prevent="createH">
+   <fieldset>
+   <legend>질문등록 :</legend>
+   아이디 : <input type = "text" name = "humorID" v-model="hID "><br><br>
+   제목 : <input type = "text" name = "humorTitle" v-model="hTitle "><br><br>
+   내용 : <input type = "text" name = "humorContent" v-model="hContent "><br><br>
+	<button type="submit" name = "button">질문 등록</button>   
+   </fieldset>
+</form>
 
-    <nav style="text-align: center;">
-        <ul class="pagination">
-            <li class="disabled">
-                <a href="#" aria-label="First">
-                    <span aria-hidden="true">First</span>
-                </a>
-            </li>
-            <li class="disabled">
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="Last">
-                    <span aria-hidden="true">Last</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    </div>
-    <div>
-    	<a href="registerForm.html">회원가입</a>
-    </div>
->>>>>>> branch 'master' of https://github.com/sej226/spring-boot.git
-    <script type="text/javascript">
+</div>
+</script>
     
+    <script type="text/javascript">
 	var allHumor = Vue.component('allHumor', {
 		template: '#allHumorTemplate',
 		data(){
@@ -270,12 +246,49 @@
 	         }
         });	
 		
+	var createHumor = Vue.component('createHumor',{
+	    template: '#createTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          humor : null,
+	          hID : '',
+	          hTitle : '',
+	          hContent : '',
+	          hDate : '',
+	          hCount : 0,
+	          humorImgURL : ''
+	        }
+	      },
+	      methods: {
+             createH(){
+                 axios.post('/api/createHumor',{
+                	humorID : this.hID,
+                	humorTitle : this.hTitle,
+                	humorContent: this.hContent,
+                	humorDate : this.hDate,
+                	humorCount : this.hCount,
+                	humorImgURL : this.humorImgURL
+                  })
+                  .then(function(response){
+                	  if(response.data.state=='succ'){
+    	                  alert(response.data.total+"이 실행되었습니다.");
+    	               }else{
+    	                  alert(response.data.total+"에 실패하였습니다.");
+    	               }
+                  })
+             	}
+	         }
+        });	
+	
+	
 	const routes = [  
 	   { path: '/route1', component: allHumor },
 	   { path: '/route2', component: datailHumor },
 	   { path: '/route3', component: updateHumor },
-	   /* { path: '/route4', component: findByTitle },
-	   { path: '/route5', component: findDetail },
+	   { path: '/route4', component: createHumor }
+	   /*{ path: '/route5', component: findDetail },
 	   { path: '/route6', component: createA},
 	   { path: '/route7', component: updateQ} */ 
 	];

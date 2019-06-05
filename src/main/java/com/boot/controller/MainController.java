@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class MainController {
    @Autowired
    private HumorService  humorService;
 
-   @RequestMapping(value = "/addHumor", method = RequestMethod.POST)
+  /* @RequestMapping(value = "/addHumor", method = RequestMethod.POST)
    public ResponseEntity<BoolResult> addHumor(@RequestBody Humor humor) throws Exception {
       logger.info("1. -------------addHumor-------------"+humor+" : "+new Date());
 
@@ -41,11 +42,13 @@ public class MainController {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
       }
       return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
-   }
-   @RequestMapping(value = "/selectAllHumor", method = RequestMethod.GET)
+   }*/
+   
+   @RequestMapping(value = "/selectAllHumor", method =  RequestMethod.GET)
    public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
-      logger.info("1.-------------selectAllHumor-------------"+new Date());
+      logger.info("-------------selectAllHumor-------------"+new Date());
       List<Humor> humors = humorService.selectAllHumor();
+      System.out.println(humors);
       if (humors.isEmpty()) {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
       }
@@ -83,12 +86,27 @@ public class MainController {
       System.out.println(flag + "삭제 결과!");
    }
    
-   @RequestMapping(value = "/createHumor", method = RequestMethod.PUT)
+   @RequestMapping(value = "/createHumor", method = RequestMethod.POST)
    public void createA(@RequestBody Humor humor) throws Exception {
-      logger.info("-------------createA-----------------------------"+new Date());
+      logger.info("-------------create-----------------------------"+new Date());
+      System.out.println(humor);
+      /*SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+      Date time = new Date();
+      String time1 = format.format(time);
+      System.out.println(time1);*/
+//      humor.setHumorDate(Date);
+      //
       boolean flag= humorService.addHumor(humor);
-   
    }
    
-   
+   @RequestMapping(value = "/selectHumorByID/{id}", method =  RequestMethod.GET)
+   public ResponseEntity<List<Humor>> selectHumorByID(@PathVariable String id) throws Exception {
+      logger.info("-------------selectHumorByID-------------"+new Date());
+      List<Humor> humors = humorService.selectHumorByID(id);
+      System.out.println(humors);
+      if (humors.isEmpty()) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<List<Humor>>(humors, HttpStatus.OK);
+   }
 }
