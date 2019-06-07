@@ -13,31 +13,29 @@
 		<div class="jumbotron">
 	        <h2>학급비 현황</h2>
 	    </div>
-
+		<h2 align="center">{{sum}}원</h2>
+		<h4 align="right"><a v-on:click="selectTransByDeposit()">입금만 검색</a> | <a v-on:click="selectTransByWithdraw()">출금만 검색</a> | <a href="./transAll.html">전체 검색</a></h4>
 		<table class="table">
 	        <tr>
 	            <th>번호</th>
 	            <th>입,출금</th>
 	            <th>금액</th>
 	            <th>날짜</th>
+	            <th> </th>
+	            <th> </th>
 	        </tr>
 	        
 			<tr v-for="trans in info">
 				<td v-html="trans.transPK"></td>
-				<td v-if="trans.dw == 0">입금</td>
-				<td v-if="trans.dw == 1">출금</td> 
-				<td v-html="trans.money"></td>
+				<td v-if="trans.dw == 0" style="color : blue;">입금</td>
+				<td v-if="trans.dw == 1" style="color : red;">출금</td>
+				<td v-if="trans.dw == 0" v-html="trans.money" style="color : blue;">{{trans.money}}</td>
+				<td v-if="trans.dw == 1" v-html="trans.money" style="color : red;">{{trans.money}}</td>
 				<td v-html="trans.transDate"></td>
-				<p v-model="trans.sum"></p>
+				<td><a v-on:click="deleteTrans(trans.transPK)">삭제</a></td>
+				<td>{{trans.sum | calcSum}}</td>
 			</tr>
-			
-	        <tr th:each="i: ${#numbers.sequence(1, 10)}">
-	            <td th:text="${i}"></td>
-	            <td th:text="글쓴이 + ${i}"></td>
-	            <td th:text="제목 + ${i}"></td>
-	        </tr>
 	    </table>
-		<h2 align="center" v-html="sum"></h2>
 		<nav style="text-align: center;">
 	        <ul class="pagination">
 	            <li class="disabled">
@@ -82,7 +80,7 @@ var app = new Vue({
     },
     mounted () {
     	axios
-        .get('/trans/all')
+        .get('http://localhost:7788/trans/all')
         .then(response => (this.info = response.data))
          .catch(error => {
              console.log(error)
@@ -90,6 +88,56 @@ var app = new Vue({
              this.errored = true
          })
          .finally(() => this.loading = false)
+   },
+   methods:{
+	   deleteTrans(pk){
+		   axios
+	        .get('http://localhost:7788/trans/delete/'+pk)
+	        .then(function(response){
+		            if(response.data.state=='succ'){
+		               alert(response.data.name+"이 실행되었습니다.");
+		               location.href='./transAll.html';
+		            }else{
+		               alert(response.data.name+"에 실패하였습니다.");
+		               alert(response.data.message);
+		               //location.href='./QandA.html';
+		            }
+		     })
+	   },
+	   selectTransByDeposit(){
+		   axios
+	        .get('http://localhost:7788/trans/deposit')
+	        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+	   },
+	   selectTransByWithdraw(){
+		   axios
+	        .get('http://localhost:7788/trans/withdraw')
+	        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+	   }
+   },
+   filters:{
+	   calcSum(value){
+		   if(value < 0){
+			   app.sum = 0;
+		   }
+		   else{
+			   app.sum = value;
+		   }
+		   
+	   }
+	   
    }
 });
 </script>

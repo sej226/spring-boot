@@ -6,6 +6,8 @@ public class BoolResult implements Serializable{
 	private String name;
 	private boolean count=false;
 	private String state="true";  // false
+	private String message = "";
+	
 	public BoolResult() {
 		super();
 	}
@@ -37,6 +39,11 @@ public class BoolResult implements Serializable{
 	public void setState(String state) {
 		this.state = state;
 	}
-	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	
 }

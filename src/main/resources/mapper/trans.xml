@@ -11,10 +11,10 @@
 		VALUES (0, #{dw}, #{money}, #{transDate})
 	</insert>
 	
-	<delete id="deleteTrans" parameterType="string">
+	<delete id="deleteTrans" parameterType="int">
 		DELETE
 		FROM trans
-		WHERE id = #{value}
+		WHERE transPK = #{transPK}
 	</delete>
 	
 	<select id="selectAllTrans" resultType="com.boot.vo.Trans">
@@ -23,17 +23,17 @@
 		FROM trans
 	</select>
 	
-	<select id="selectTransByDeposit" resultType="com.boot.vo.Trans" parameterType="boolean">
+	<select id="selectTransByDeposit" resultType="com.boot.vo.Trans" parameterType="int">
 		SELECT
-		receiverID, senderID, memoTitle, memoContent, memoDate
-		FROM memo
+		transPK, DW, money, transDate
+		FROM trans
 		WHERE DW = #{value}
 	</select>
 	
-	<select id="selectTransByWithdraw" resultType="com.boot.vo.Trans"  parameterType="boolean">
+	<select id="selectTransByWithdraw" resultType="com.boot.vo.Trans"  parameterType="int">
 		SELECT
-		receiverID, senderID, memoTitle, memoContent, memoDate
-		FROM memo
+		transPK, DW, money, transDate
+		FROM trans
 		WHERE DW = #{value}
 	</select>
 	
