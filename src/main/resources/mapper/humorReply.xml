@@ -8,7 +8,7 @@
 	<insert id="addHumorReply" parameterType="com.boot.vo.Humorreply">
 		INSERT
 		INTO humorreply
-		VALUES(0, #{humorPK}, #{id}, #{content}, curdate())
+		VALUES(0, #{humorPK}, #{humorReplyID}, #{humorReplyContent}, curdate())
 	</insert>
 	
 	<select id="selectAllHumorReply" resultType="com.boot.vo.Humorreply">
@@ -17,11 +17,20 @@
 		FROM humorreply
 	</select>
 	
+	<!-- 게시글 번호로 댓글 모두 호출하기 위해서 추가함 -->
 	<select id="selectAllHumorReplyByNum" resultType="com.boot.vo.Humorreply" parameterType="int">
 		SELECT
 		humorReplyPK, humorPK, humorReplyID, humorReplyContent, humorReplyDate
 		FROM humorreply
 		WHERE humorPK = #{value}
+	</select>
+	
+	<!-- 댓글 번호로 하나의 댓글 조회하기 위해 추가함 -->
+	<select id="selectOneHumorReply" resultType="com.boot.vo.Humorreply" parameterType="int">
+		SELECT
+		humorReplyPK, humorPK, humorReplyID, humorReplyContent, humorReplyDate
+		FROM humorreply
+		WHERE humorReplyPK = #{value}
 	</select>
 	
 	<delete id="deleteHumorReply" parameterType="int">
@@ -34,10 +43,11 @@
 		UPDATE
 		humorreply
 		SET
-			humorReplyID= #{id}, 
-			humorReplyContent= #{content},  
+			humorReplyID= #{humorReplyID}, 
+			humorReplyContent= #{humorReplyContent},  
 			humorReplyDate= curdate()
 		WHERE humorReplyPK= #{humorReplyPK}
 	</update>
+	
 </mapper>
 

@@ -82,7 +82,7 @@
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
 </div>
 	</script>
-	<!-- <router-link v-bind:to = "{path:route4}" > 글 작성  | </router-link> -->
+	
 	<script type="text/x-template" id="detailTemplate">
 	<div>
 		<div class="jumbotron">
@@ -102,26 +102,34 @@
 		<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
 		<a v-on:click="deleteH"> 삭제   </a><hr>	
 	
-	<div>
-		<input type="text" v-model="inputReply" placeholder="댓글을 입력하세요."/>
-		 
-	</div>
-	여기에 댓글 나온다 {{inputReply}}
-	<br><br>
-	<a v-on:click="allReply">댓글 조회</a> <br><hr>
- 
+	댓글 창
 	<div v-if="reply != null">
 		<table class="table">
 			<tr v-for="r in reply">
 				<img src="./img/user.png" width="45px" height="45px">
 				<td v-html="r.humorReplyID"></td>
-				<td v-html="r.humorReplyContent"></td>
-				<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
-				<a v-on:click="deleteH"> 삭제   </a><hr>
+				<td v-html="r.humorReplyContent"></td> 
+				<div v-if="humor.humorID === r.humorReplyID">
+					<a v-on:click="flag = r.humorReplyPK"> 수정  || </a>
+					<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a>
+				</div>
+				 
+			</tr>
+			<tr v-if="flag > 0"> 
+				<br><br><br>
+				<td> 댓글 수정  : {{flag}}</td>
+				<input type="text" v-model="rContent" placeholder="댓글을 수정하세요."/>
+				{{rContent}}
+				<a v-on:click="updateR(rContent)">댓글 수정</a><br>
 			</tr>
 	    </table>
-			
+	</div><hr>	
+		
+	<div>
+		<input type="text" v-model="inputReply" placeholder="댓글을 입력하세요."/>
+		<a v-on:click="addReply">댓글 등록</a><br>	
 	</div>
+
 </div>
 	</script>
 	 
@@ -240,6 +248,44 @@
 		</form>
 	</div>
 	</script>
+	
+	<script type="text/x-template" id="updateRTemplate">
+	<div>
+		<div class="jumbotron">
+	        <h2>스프링 부트 게시판 - 댓글 수정</h2>
+	    </div>
+ 		<table class="table">
+		<tr>
+			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>
+		</tr>
+  	    <tr>
+			<th style="font-size: 20px;">작성자</th><td ><p v-html="humor.humorID"></p></td>
+		</tr>
+ 		<tr>
+			<th style="font-size: 20px;">내용</th><td ><p v-html="humor.humorContent"></p></td>
+ 		</tr>
+  		</table>
+		<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+		<a v-on:click="deleteH"> 삭제   </a>	
+		<hr>
+
+		<div v-if="reply != null">
+		null???
+		<table class="table">
+			<tr v-for="r in reply">
+				<img src="./img/user.png" width="45px" height="45px">
+				<td v-html="r.humorReplyID"></td>
+				<td v-html="r.humorReplyContent"></td> 
+				<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a> 
+			</tr>
+	    </table>
+	</div><hr>	
+	<div>
+		<input type="text" v-model="inputReply" placeholder="댓글을 수정하세요."/>
+		<a v-on:click="updateReply">댓글 수정</a><br>	
+	</div>
+</div>
+	</script>
     
     <script type="text/javascript">
 	var allHumor = Vue.component('allHumor', {
@@ -273,7 +319,11 @@
 	          errored: false,
 	          pk : (window.location.href).split('=')[1],
 	          humor : null,
-	          reply : []
+	          reply : [],
+	          inputReply : '',
+	          rDate : '',
+	          rPK : 0,
+	          flag : -1,
 	        }
 	      },
 	      mounted () {
@@ -285,6 +335,15 @@
 	  		      this.errored = true
 	  		    })
 	  		    .finally(() => this.loading = false);
+            	//
+            	axios
+      		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
+      		        .then(response => (this.reply = response.data))
+      		         .catch(error => {
+      		             console.log(error)
+      		             this.errored = true
+      		         })
+      		         .finally(() => this.loading = false)
         	},
         	 methods: {
 	      	 	deleteH() {
@@ -297,17 +356,48 @@
 			      		 .finally(() => this.loading = false);
 			      			router.push('/route1');
 			      	 	},
-			    allReply() {
-		      				axios
-		      		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
-		      		        .then(response => (this.reply = response.data))
-		      		         .catch(error => {
-		      		             console.log(error)
-		      		             this.errored = true
-		      		         })
-		      		         .finally(() => this.loading = false)
-		      	}
-        	 }
+             	addReply() {
+             		axios.post('/api/createReply',{
+             			humorReplyPK : this.rPK,
+             			humorPK : this.humor.humorPK,
+             			humorReplyID : this.humor.humorID,
+             			humorReplyContent : this.inputReply,
+             			humorReplyDate: this.rDate
+                      })
+                      .then(function(response){
+                    	  if(response.data.state=='succ'){
+        	                  alert(response.data.total+"이 실행되었습니다.");
+        	               }else{
+        	                  alert(response.data.total+"에 실패하였습니다.");
+        	               }
+                      })
+             	},
+             	deleteR(rPK){
+             		axios
+		      		 .delete('/api/deleteHumorReply/' + rPK)
+		      		 .catch(error => {
+			      		 console.log(error)
+			      		 this.errored = true
+		      		 })
+		      		 .finally(() => this.loading = false);
+		      			router.push('/route1');
+             		},
+             		updateR(rContent){
+                       axios.post('/api/updateHumorReply',{
+                       	humorReplyPK : this.flag,
+   		      			humorPK : this.humor.humorPK,
+   		      			humorReplyID : this.humor.humorID,
+   		      			humorReplyContent: rContent,
+   		      			humorReplyDate : this.rDate
+                        })
+                        .then(function(response){
+                        	alert("end?");
+                      	  router.push('/route1');
+                        })
+                        alert("댓글 수정 완료");
+                        router.push('/route1');
+                   	}
+        	 	}
         	});	
 	
 	var updateHumor = Vue.component('updateHumor',{
@@ -364,9 +454,7 @@
 	          hContent : '',
 	          hDate : '',
 	          hCount : 0,
-	          humorImgURL : '',
-	          inputReply : '',
-	          rDate : ''
+	          humorImgURL : ''
 	        }
 	      },
 	      methods: {
@@ -386,24 +474,8 @@
     	                  alert(response.data.total+"에 실패하였습니다.");
     	               }
                   })
-             	},
-             addReply() {
-             		axios.post('/api/createReply',{
-             			humorPK : this.pk,
-             			humorReplyID : this.hID,
-             			humorReplyContent : this.inputReply,
-             			humorReplyDate: this.rDate
-                      })
-                      .then(function(response){
-                    	  if(response.data.state=='succ'){
-        	                  alert(response.data.total+"이 실행되었습니다.");
-        	               }else{
-        	                  alert(response.data.total+"에 실패하였습니다.");
-        	               }
-                      })
              	}
 	         }
-	         
         });	
 	
 	var findHumor = Vue.component('findHumor',{
@@ -450,6 +522,58 @@
 	         .finally(() => this.loading = false)
 	   }
 	}); */
+	/* var updateReply = Vue.component('updateReply',{
+	    template: '#updateRTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          pk : (window.location.href).split('=')[1],
+	          humor : null,
+	          hTitle : '',
+	          rContent : '',
+	          reply : []
+	        }
+	      },
+	      mounted () {
+	    	  axios
+	  		    .get('/api/selectHumorByNum/' + this.pk)
+	  		    .then(response => (this.humor = response.data))
+	  		    .catch(error => {
+	  		      console.log(error)
+	  		      this.errored = true
+	  		    })
+	  		    .finally(() => this.loading = false); 
+	    	   alert("bb"); 
+	    	 // 
+			axios
+  		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
+  		        .then(response => (this.reply = response.data))
+  		         .catch(error => {
+  		             console.log(error)
+  		             this.errored = true
+  		         })
+  		         .finally(() => this.loading = false)
+	         
+	          alert("댓글 가져와"); 
+         },
+	      methods: {
+	    	    
+		      	updateReply(rPK){
+		      		 axios.post('/api/updateHumorReply',{
+		      			humorReplyPK : rPK,
+		      			humorPK : this.humor.humorPK,
+		      			humorReplyID : this.reply.humorID,
+		      			humorReplyContent: this.rContent,
+		      			humorReplyDate : this.reply.humorReplyDate
+	                  })
+	                  .then(function(response){
+	                	  router.push('/route1');
+	                      alert(response.data.total+"이 실행되었습니다.");
+	                  })
+		      	}
+	         }
+        });	 */
 	
 	const routes = [  
 	   { path: '/route1', component: allHumor },
@@ -457,7 +581,7 @@
 	   { path: '/route3', component: updateHumor },
 	   { path: '/route4', component: createHumor },
 	   { path: '/route5', component: findHumor }
-	  /*  { path: '/route6', component: allReply } */
+/* 	   { path: '/route6', component: updateReply } */
 	];
 	
 	const router = new VueRouter({

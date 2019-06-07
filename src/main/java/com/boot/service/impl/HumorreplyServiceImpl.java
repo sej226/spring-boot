@@ -41,4 +41,9 @@ public class HumorreplyServiceImpl implements HumorreplyService {
 		return humorreplyDAO.selectAllHumorReplyByNum(pk);
 	}
 
+	@Override
+	public Humorreply selectOneHumorReply(int humorReplyPK) throws Exception {
+		return humorreplyDAO.selectOneHumorReply(humorReplyPK);
+	}
+
 }

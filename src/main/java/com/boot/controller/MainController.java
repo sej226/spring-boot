@@ -159,7 +159,36 @@ public class MainController {
    public void createReply(@RequestBody Humorreply humorreply) throws Exception {
       logger.info("-------------createReply-----------------------------"+new Date());
       System.out.println(humorreply);
-      
+      System.out.println(humorreply.getHumorReplyContent());
       boolean flag= humorreplyService.addHumorReply(humorreply);
    }
+   
+   @RequestMapping(value = "/updateHumorReply", method = RequestMethod.POST)
+   public void updateHumorReply(@RequestBody Humorreply humorreply) throws Exception{
+      logger.info("-------------updateHumorReply-------------" + new Date());
+      System.out.println(humorreply);
+      boolean flag = humorreplyService.updateHumorReply(humorreply);
+      if(!flag) {
+         System.out.println("Empty!!!");
+      }
+   }
+   
+   @RequestMapping(value = "/deleteHumorReply/{humorReplyPK}", method = RequestMethod.DELETE)
+   public void deleteHumorReply(@PathVariable int humorReplyPK) throws Exception {
+      logger.info("-------------deleteHumorReply-----------------------------"+new Date());
+      
+      boolean flag = humorreplyService.deleteHumorReply(humorReplyPK);
+      System.out.println(flag + "삭제 결과!");
+   }
+   
+   @RequestMapping(value = "/selectOneHumorReply/{humorReplyPK}", method = RequestMethod.GET)
+   public ResponseEntity<Humorreply> selectOneHumorReply(@PathVariable int humorReplyPK) throws Exception{
+      logger.info("-------------selectOneHumorReply-------------"+new Date());
+      Humorreply humorreply = humorreplyService.selectOneHumorReply(humorReplyPK);
+      if(humorreply == null) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<Humorreply>(humorreply, HttpStatus.OK);
+   }
+   
 }
