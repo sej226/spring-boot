@@ -31,10 +31,22 @@ public static final Logger logger = LoggerFactory.getLogger(MemberController.cla
 	@Autowired
 	private MemoService  memoService;
 	
+	@RequestMapping(value = "/memo", method = RequestMethod.GET)
+	public String memo() throws Exception {
+		return "memoForm";
+	}
+	
+	@RequestMapping(value = "/mymemo", method = RequestMethod.GET)
+	public String mymemo() throws Exception {
+		return "MyMemo";
+	}
+	
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
-	public ResponseEntity<BoolResult> sendMemo(@RequestBody Memo memo) throws Exception {
+	public ResponseEntity<BoolResult> sendMemo(@RequestBody Memo memo, HttpSession session) throws Exception {
 		logger.info("1. -------------sendMemo-------------"+memo+" : "+new Date());
 
+		Member member = (Member) session.getAttribute("member");
+		memo.setSenderID(member.getId());  
 		boolean total = memoService.sendMemo(memo);
 		BoolResult nr = new BoolResult();
 		nr.setCount(total);
