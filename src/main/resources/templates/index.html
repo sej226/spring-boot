@@ -11,20 +11,26 @@
 </head>
 <body class="container">
 	<div class="jumbotron">
-        <h2>스프링 부트 게시판</h2>
-        {{#msg}}
+        <h2>스프링 부트 게시판</h2><br>
+       <!--  {{#msg}}
         {{msg}}
-        {{/msg}}
+        {{/msg}} -->
         
         {{#member}}
-        {{member.name}} 
+       	<h4> <b>{{member.name}} 님</b>  환영합니다 ^^ </h4>
         {{/member}}
     </div>
 	<div id = 'app'>
-		<a href="/registerPage"> 회원가입^^! </a>  &nbsp;&nbsp;  
+		<a href="/registerPage"> 회원가입^^! </a>  &nbsp;&nbsp; 
+		{{^member}} 
 		<a href="/loginPage"> LOGIN </a> &nbsp;&nbsp; 
+		 {{/member}}
+		 {{#member}} 
+		<a href="/logoutPage"> LOGOUT </a>   &nbsp;&nbsp; 
+		{{/member}}
 		<router-link to = "/route1" id = "route">게시글 조회</router-link> &nbsp;&nbsp;  
-		<router-link to = "/route4" id = "route"> 글 작성 </router-link>
+		<router-link to = "/route4" id = "route"> 글 작성 </router-link><br>
+		<hr>
 		<router-view></router-view>
 	</div>
 	<script type="text/x-template" id = "allHumorTemplate">
@@ -92,12 +98,33 @@
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
 </div>
 	</script>
-	
+<!-- 
+<c:choose>
+         <c:when test="${sessionScope.list != null}">
+         	<div id = rank>
+				<dl id="rank-list">
+					<dt>실시간 급상승 검색어</dt>
+					<dd>
+						<ol>
+						<c:forEach var="reportMap" items="${sessionScope.list}"  varStatus="status">
+							<li><a href="#">${status.index +1} 순위   ${reportMap.word} </a></li>
+						</c:forEach>	
+						</ol>
+					</dd>
+				</dl>
+			</div> 
+         </c:when>
+         <c:otherwise>
+         </c:otherwise>
+     </c:choose>
+ -->	
 	<script type="text/x-template" id="detailTemplate">
+
+
 	<div>
  		<table class="table">
 		<tr>
-			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>
+			<th style="font-size: 20px;">제목 </th><td ><p v-html="humor.humorTitle"></p></td>
 		</tr>
   	    <tr>
 			<th style="font-size: 20px;">작성자</th><td ><p v-html="humor.humorID"></p></td>
@@ -106,9 +133,14 @@
 			<th style="font-size: 20px;">내용</th><td ><p v-html="humor.humorContent"></p></td>
  		</tr>
   		</table>
-		<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
-		<a v-on:click="deleteH"> 삭제   </a><hr>	
-	
+		
+		{{#member}}
+			<div v-if="{{member.id}} == humor.humorID">
+				<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+				<a v-on:click="deleteH"> 삭제   </a>	
+			</div>
+       	{{/member}}
+	<hr>
 	댓글 창
 	<div v-if="reply != null">
 		<table class="table">
@@ -116,11 +148,12 @@
 				<img src="./img/user.png" width="45px" height="45px">
 				<td v-html="r.humorReplyID"></td>
 				<td v-html="r.humorReplyContent"></td> 
-				<div v-if="humor.humorID === r.humorReplyID">
-					<a v-on:click="flag = r.humorReplyPK"> 수정  || </a>
-					<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a>
-				</div>
-				 
+				{{#member}}
+					<div v-if="{{member.id}} == r.humorReplyID">
+						<a v-on:click="flag = r.humorReplyPK"> 수정  | </a>
+						<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a>
+					</div>
+       		 	{{/member}}
 			</tr>
 			<tr v-if="flag > 0"> 
 				<br><br><br>
@@ -237,13 +270,12 @@
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
 	</div>
 	</script>
-	
+	<!-- 아이디 : <input type = "text" name = "humorID" v-model="hID "><br><br>  -->
 	<script type= "text/x-template" id = "createTemplate">
 	<div>
 		<form method = "post" id = "_frmForm" name = "frmForm" @submit.prevent="createH">
  	 	 <fieldset>
   		 <legend>질문등록 :</legend>
-  		아이디 : <input type = "text" name = "humorID" v-model="hID "><br><br>
    		제목 : <input type = "text" name = "humorTitle" v-model="hTitle "><br><br>
   		 내용 : <input type = "text" name = "humorContent" v-model="hContent "><br><br>
 			<button type="submit" name = "button">질문 등록</button>   

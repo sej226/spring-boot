@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.boot.service.MemberService;
 import com.boot.service.impl.MemberServiceImpl;
@@ -62,7 +63,34 @@ public class LoginController {
 	@RequestMapping("/loginPage") 
 	public String loginPage(Model model) throws Exception { 
 		model.addAttribute("msg", "환영합니다!");
-		return "ttt";
+		return "login";
+	}
+	
+	@RequestMapping("/loginMember") 
+	public String loginMember(HttpSession session, HttpServletRequest reqeust, HttpServletResponse response, Model model) throws Exception { 
+		System.out.println("loginMember");
+		String id = reqeust.getParameter("id");
+		String password = reqeust.getParameter("password");
+		String name;
+		System.out.println(id + " " + password  );
+		
+		Member member = memberService.selectMemberByID(id);
+		session = reqeust.getSession();
+		System.out.println(member);
+		
+		if(member != null) {
+			session = reqeust.getSession(true); 
+			session.setAttribute("member", member);
+			model.addAttribute("msg", "환영합니다!");
+		}else {
+			model.addAttribute("msg", "로그인에 실패했습니다.");
+		}
+		return "index";
+	}
+	@RequestMapping("/logoutPage") 
+	public String logoutPage(HttpSession session, HttpServletRequest reqeust, HttpServletResponse response) throws Exception { 
+		reqeust.getSession().invalidate();
+		return "index";
 	}
 	
 }

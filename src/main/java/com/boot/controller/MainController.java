@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import com.boot.service.HumorreplyService;
 import com.boot.vo.BoolResult;
 import com.boot.vo.Humor;
 import com.boot.vo.Humorreply;
+import com.boot.vo.Member;
 
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @Controller
@@ -78,15 +82,21 @@ public class MainController {
    }
    
    @RequestMapping(value = "/createHumor", method = RequestMethod.POST)
-   public void createA(@RequestBody Humor humor) throws Exception {
+   public void createA(@RequestBody Humor humor, HttpServletRequest request) throws Exception {
       logger.info("-------------create-----------------------------"+new Date());
       System.out.println(humor);
+      
       /*SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
       Date time = new Date();
       String time1 = format.format(time);
       System.out.println(time1);*/
 //      humor.setHumorDate(Date);
       //
+      HttpSession session = request.getSession();;
+      Member member = (Member) session.getAttribute("member");
+      System.out.println("@@@@@@@@@@@@@@@@@@@@");
+      System.out.println(member);
+      humor.setHumorID(member.getId());
       boolean flag= humorService.addHumor(humor);
    }
    
@@ -142,10 +152,15 @@ public class MainController {
    }
    
    @RequestMapping(value = "/createReply", method = RequestMethod.POST)
-   public void createReply(@RequestBody Humorreply humorreply) throws Exception {
+   public void createReply(@RequestBody Humorreply humorreply, HttpServletRequest request) throws Exception {
       logger.info("-------------createReply-----------------------------"+new Date());
       System.out.println(humorreply);
       System.out.println(humorreply.getHumorReplyContent());
+      HttpSession session = request.getSession();;
+      Member member = (Member) session.getAttribute("member");
+//      System.out.println("@@@@@@@@@@@@@@@@@@@@");
+//      System.out.println(member);
+      humorreply.setHumorReplyID(member.getId());
       boolean flag= humorreplyService.addHumorReply(humorreply);
    }
    
