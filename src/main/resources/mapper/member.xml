@@ -16,11 +16,11 @@
 		FROM member
 		WHERE id = #{value}
 	</delete>
-	
+	<!-- name 수정 부분 삭제함  관리자가 등급 수정만 할 것 -->
 	<update id="updateMember"  parameterType="com.boot.vo.Member">
 		UPDATE
 		member
-		SET name = #{name}, grade = #{grade}
+		SET grade = #{grade}
 		WHERE id = #{id}
 	</update>
 	

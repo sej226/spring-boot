@@ -1,5 +1,7 @@
 package com.boot.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,7 +40,7 @@ public class LoginController {
 		String password = reqeust.getParameter("password");
 		String name = reqeust.getParameter("name");
 		System.out.println(id + " " + password + " " + name);
-		Member member = new Member(id, password, name, "Normal");
+		Member member = new Member(id, password, name, "Intermediate");
 		
 		Member mem = memberService.selectMemberByID(id);
 		System.out.println(member);
@@ -88,6 +90,13 @@ public class LoginController {
 	public String logoutPage(HttpSession session, HttpServletRequest reqeust, HttpServletResponse response) throws Exception { 
 		reqeust.getSession().invalidate();
 		return "index";
+	}
+	
+	@RequestMapping("/managementMemberPage") 
+	public String managementMemberPage(Model model) throws Exception { 
+//		List<Member> members = memberService.selectAllMember();
+//		model.addAttribute("members", members);
+		return "management";
 	}
 	
 }

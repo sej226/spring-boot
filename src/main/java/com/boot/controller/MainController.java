@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.boot.service.HumorService;
 import com.boot.service.HumorreplyService;
+import com.boot.service.MemberService;
 import com.boot.vo.BoolResult;
 import com.boot.vo.Humor;
 import com.boot.vo.Humorreply;
@@ -37,13 +38,15 @@ public class MainController {
    
    @Autowired
    private HumorreplyService humorreplyService;
+   
+   @Autowired
+   private MemberService memberService;
 
    @RequestMapping(value = "/selectAllHumor", method =  RequestMethod.GET)
    public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
       logger.info("-------------selectAllHumor-------------"+new Date());
       List<Humor> humors = humorService.selectAllHumor();
       System.out.println(humors);
-      System.out.println(humors.get(1).getHumorDate() + "날짜 왜깨져");
       
       if (humors.isEmpty()) {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -53,8 +56,10 @@ public class MainController {
    
    @RequestMapping(value = "/selectHumorByNum/{humorPK}", method = RequestMethod.GET)
    public ResponseEntity<Humor> selectHumorByNum(@PathVariable int humorPK) throws Exception{
-      logger.info("-------------selectHumorByNum-------------"+new Date());
+      logger.info("-------------selectHumorByNum!-------------"+new Date());
       Humor humor = humorService.selectHumorByNum(humorPK);
+      System.out.println(humorPK);
+      System.out.println("클린한고임 " + humor);
       if(humor == null) {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
       }
@@ -193,4 +198,45 @@ public class MainController {
       return new ResponseEntity<Humorreply>(humorreply, HttpStatus.OK);
    }
    
+
+   @RequestMapping(value = "/selectAllMember", method =  RequestMethod.GET)
+   public ResponseEntity<List<Member>> selectAllMember() throws Exception {
+      logger.info("-------------selectAllMember-------------"+new Date());
+      List<Member> members = memberService.selectAllMember();
+      System.out.println(members + " 관리자가 조회한 정보");
+      if (members.isEmpty()) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
+   }
+   
+   @RequestMapping(value = "/selectMemberByID/{id}", method =  RequestMethod.GET)
+   public ResponseEntity<Member> selectMemberByID(@PathVariable String id) throws Exception {
+      logger.info("-------------selectMemberByID-------------"+new Date());
+      Member member = memberService.selectMemberByID(id);
+      System.out.println(member + " id로 조회한 정보");
+      if (member == null) {
+         return new ResponseEntity(HttpStatus.NO_CONTENT);
+      }
+      return new ResponseEntity<Member>(member, HttpStatus.OK);
+   }
+   
+   @RequestMapping(value = "/updateMember", method = RequestMethod.POST)
+   public void updateMember(@RequestBody Member member) throws Exception{
+      logger.info("-------------updateMember-------------" + new Date());
+      Member mem = memberService.selectMemberByID(member.getId());
+      System.out.println(member);
+      boolean flag = memberService.updateMember(member);
+      if(!flag) {
+         System.out.println("Fail!!!");
+      }
+   }
+   
+   @RequestMapping(value = "/deleteMember/{id}", method = RequestMethod.DELETE)
+   public void deleteMember(@PathVariable String id) throws Exception {
+      logger.info("-------------deleteMember-----------------------------"+new Date());
+      id += ".com";
+      boolean flag = memberService.deleteMember(id);
+      System.out.println(flag + "삭제 결과!");
+   }
 }

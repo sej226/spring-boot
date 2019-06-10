@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<!--  라우터 라이브러리 추가   -->
+ <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<style>
+
+body {
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 15px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+	<div class="jumbotron">
+       <h2 align="center"> 회원 관리 페이지</h2><br>
+   </div>
+	<div id = 'app'>
+		<router-link to = '/allMem' id = "route"> 조회 </router-link>
+		<router-view></router-view>
+	</div>
+	
+ 	<script type="text/x-template" id = "allMemberTemplate">
+	<div>
+		<table id="customers">
+ 			<tr>
+    			<th>Name</th>
+    			<th>User ID</th>
+    			<th>Grade</th>
+  			</tr>
+  			<tr v-if="i.id != 'admin'" v-for="i in info">
+   				<td   v-html = "i.id"></td>
+    			<td   v-html = "i.name"></td>
+    			<td  v-if="i.id != 'admin'">
+				<select  v-model="selected">
+    				<option disabled value="i.grade" v-html = "i.grade"></option>
+    				<option>Intermediate</option>
+    				<option>Advanced</option>
+    				<option>Advanced+</option>
+    				<option>Professional</option>
+  				</select>
+				</td> 
+				<a v-on:click="updateM(i.id)">수우정   </a>
+				<a v-on:click="deleteM(i.id)"> &nbsp; 삭제  </a> 
+  			</tr>
+		</table>
+	</div>
+	</script>
+	
+	<!--  
+	<router-link v-if="i.id != 'admin'"  v-bind:to = "{path:'/updateMem?pk='+ i.id}" > 수정  | </router-link>				
+	-->
+	<script type="text/javascript">
+	
+	var allMember = Vue.component('allMember',{
+		template: '#allMemberTemplate',
+		data(){
+			return{
+				info : [],
+				loading: true,
+		        errored: false,
+		        mem : null,
+		        selected : ''
+			}
+		},
+		mounted(){
+			axios
+	        .get('/api/selectAllMember')
+			.then(response => (this.info = response.data))
+			 .catch(error => {
+	             console.log(error)
+	             alert(error)
+	             this.errored = true
+	         })
+	         .finally(() => this.loading = false)
+		},
+	      methods: {
+	    	  updateM(selectedID){
+                 axios
+                 .post('/api/updateMember',{
+                	id :selectedID,
+                	grade: this.selected,
+                  })
+                  .then(function(response){
+                  })
+             	},
+             deleteM(deleteID) {
+		      	axios
+	      		 .delete('/api/deleteMember/' + deleteID)
+	      		 .catch(error => {
+		      		 console.log(error)
+		      		 this.errored = true
+	      		 })
+	      		 .finally(() => this.loading = false);
+			     }
+	         }
+		});
+	
+	/* var updateMember = Vue.component('updateMember',{
+	    template: '#updateTemplate',
+	    data(){
+	        return {
+	          loading: true,
+	          errored: false,
+	          id : (window.location.href).split('=')[1],
+	          mem : null,
+	          selected : ''
+	        }
+	      },
+	      mounted () {
+	    	  axios
+	  		    .get('/api/selectMemberByID/' + this.id)
+	  		    .then(response => (this.mem = response.data))
+	  		    .catch(error => {
+	  		      console.log(error)
+	  		      this.errored = true
+	  		    })
+	  		    .finally(() => this.loading = false); 
+         }
+        });	 */
+		
+	
+	const routes = [  
+		{path : '/allMem', component : allMember}
+		/* {path : '/updateMem', component : updateMember} */
+	];
+	
+	const router = new VueRouter({
+		   routes   
+	});
+	
+	var App=new Vue({
+	  el: '#app',
+	  router
+	})
+	</script>
+
+</body>
+</html>
