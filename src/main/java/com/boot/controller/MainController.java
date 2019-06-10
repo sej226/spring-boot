@@ -38,12 +38,13 @@ public class MainController {
    @Autowired
    private HumorreplyService humorreplyService;
 
-   
    @RequestMapping(value = "/selectAllHumor", method =  RequestMethod.GET)
    public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
       logger.info("-------------selectAllHumor-------------"+new Date());
       List<Humor> humors = humorService.selectAllHumor();
       System.out.println(humors);
+      System.out.println(humors.get(1).getHumorDate() + "날짜 왜깨져");
+      
       if (humors.isEmpty()) {
          return new ResponseEntity(HttpStatus.NO_CONTENT);
       }
@@ -86,7 +87,7 @@ public class MainController {
       logger.info("-------------create-----------------------------"+new Date());
       System.out.println(humor);
       
-      /*SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+      /*SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
       Date time = new Date();
       String time1 = format.format(time);
       System.out.println(time1);*/

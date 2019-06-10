@@ -98,29 +98,8 @@
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
 </div>
 	</script>
-<!-- 
-<c:choose>
-         <c:when test="${sessionScope.list != null}">
-         	<div id = rank>
-				<dl id="rank-list">
-					<dt>실시간 급상승 검색어</dt>
-					<dd>
-						<ol>
-						<c:forEach var="reportMap" items="${sessionScope.list}"  varStatus="status">
-							<li><a href="#">${status.index +1} 순위   ${reportMap.word} </a></li>
-						</c:forEach>	
-						</ol>
-					</dd>
-				</dl>
-			</div> 
-         </c:when>
-         <c:otherwise>
-         </c:otherwise>
-     </c:choose>
- -->	
+
 	<script type="text/x-template" id="detailTemplate">
-
-
 	<div>
  		<table class="table">
 		<tr>
@@ -302,7 +281,6 @@
 		<hr>
 
 		<div v-if="reply != null">
-		null???
 		<table class="table">
 			<tr v-for="r in reply">
 				<img src="./img/user.png" width="45px" height="45px">
