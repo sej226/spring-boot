@@ -28,6 +28,16 @@ public class TransController {
 	@Autowired
 	private TransService transService;
 	
+	@RequestMapping(value = "/transPage")
+	public String transPage() {
+		return "trans";
+	}
+	
+	@RequestMapping(value = "/transAllPage")
+	public String transAllPage() {
+		return "transAll";
+	}
+	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<BoolResult> addTrans(@RequestBody Trans trans) throws Exception{
 		logger.info("1. -------------addTrans-------------"+trans+" : "+new Date());

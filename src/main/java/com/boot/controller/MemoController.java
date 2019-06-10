@@ -31,8 +31,13 @@ public static final Logger logger = LoggerFactory.getLogger(MemberController.cla
 	@Autowired
 	private MemoService  memoService;
 	
-	@RequestMapping(value = "/form", method = RequestMethod.GET)
-	public String memo() throws Exception {
+	@RequestMapping("/myMemoPage")
+	public String myMemoPage() throws Exception {
+		return "myMemo";
+	}
+	
+	@RequestMapping("/formPage")
+	public String formPage() throws Exception {
 		return "memoForm";
 	}
 	
@@ -46,9 +51,7 @@ public static final Logger logger = LoggerFactory.getLogger(MemberController.cla
 		logger.info("1. -------------sendMemo-------------"+memo+" : "+new Date());
 
 		Member member = (Member) session.getAttribute("member");
-		//memo.setSenderID(member.getId());  
-		memo.setSenderID("forever9882@gmail.com"); 
-		System.out.println(memo);
+		memo.setSenderID(member.getId());  
 		boolean total = memoService.sendMemo(memo);
 		BoolResult nr = new BoolResult();
 		nr.setCount(total);
@@ -78,9 +81,9 @@ public static final Logger logger = LoggerFactory.getLogger(MemberController.cla
 	@RequestMapping(value = "/selectID", method = RequestMethod.GET)
 	public ResponseEntity<List<Memo>> selectID(HttpSession session) throws Exception {
 		logger.info("1. -------------selectID------------- : "+new Date());
-		//Member member = (Member) session.getAttribute("member");
+		Member member = (Member) session.getAttribute("member");
 		
-		List<Memo> memos = memoService.selectMemoByReceiverID("forever9882@gmail.com");
+		List<Memo> memos = memoService.selectMemoByReceiverID(member.getId());
 	      if (memos.isEmpty()) {
 	         return new ResponseEntity(HttpStatus.NO_CONTENT);
 	      }

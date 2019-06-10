@@ -11,10 +11,10 @@
 <div id="app">
 	<div>
 		<div class="jumbotron">
-	        <h2>학급비 현황</h2>
+	        <h2 align="center">학급비 현황</h2>
 	    </div>
-		<h2 align="center">{{sum}}원</h2>
-		<h4 align="right"><a v-on:click="selectTransByDeposit()">입금만 검색</a> | <a v-on:click="selectTransByWithdraw()">출금만 검색</a> | <a href="./transAll.html">전체 검색</a></h4>
+		<h2 align="center">총액 : <span v-html="sum"></span>원</h2>
+		<h4 align="right"><a href="/trans/transPage">회비 입력</a> | <a v-on:click="selectTransByDeposit()">입금만 검색</a> | <a v-on:click="selectTransByWithdraw()">출금만 검색</a> | <a href="/trans/transAllPage">전체 검색</a></h4>
 		<table class="table">
 	        <tr>
 	            <th>번호</th>
@@ -29,11 +29,11 @@
 				<td v-html="trans.transPK"></td>
 				<td v-if="trans.dw == 0" style="color : blue;">입금</td>
 				<td v-if="trans.dw == 1" style="color : red;">출금</td>
-				<td v-if="trans.dw == 0" v-html="trans.money" style="color : blue;">{{trans.money}}</td>
-				<td v-if="trans.dw == 1" v-html="trans.money" style="color : red;">{{trans.money}}</td>
+				<td v-if="trans.dw == 0" v-html="trans.money" style="color : blue;"></td>
+				<td v-if="trans.dw == 1" v-html="trans.money" style="color : red;"></td>
 				<td v-html="trans.transDate"></td>
 				<td><a v-on:click="deleteTrans(trans.transPK)">삭제</a></td>
-				<td>{{trans.sum | calcSum}}</td>
+				<td v-bind:id="trans.sum | calcSum"></td>
 			</tr>
 	    </table>
 		<nav style="text-align: center;">
@@ -65,6 +65,7 @@
 	            </li>
 	        </ul>
 	    </nav>
+	    <h4 align="center"><a href="/">-처음페이지로-</a></h4>
 </div>
 </div>
 <script type="text/javascript">
@@ -96,11 +97,11 @@ var app = new Vue({
 	        .then(function(response){
 		            if(response.data.state=='succ'){
 		               alert(response.data.name+"이 실행되었습니다.");
-		               location.href='./transAll.html';
+		               location.href='/trans/transAllPage';
 		            }else{
 		               alert(response.data.name+"에 실패하였습니다.");
 		               alert(response.data.message);
-		               //location.href='./QandA.html';
+		               location.href='/trans/transAllPage';
 		            }
 		     })
 	   },

@@ -13,6 +13,7 @@
 		<div class="jumbotron">
 	        <h2>내 메모 보기</h2>
 	    </div>
+	    <h4 align="right"><a href="/memo/formPage">쪽지 보내기</a></h4>
 		<table class="table">
 	        <tr>
 	            <th>보낸이</th>
@@ -59,6 +60,7 @@
 	            </li>
 	        </ul>
 	    </nav>
+	    <h4 align="center"><a href="/">-처음페이지로-</a></h4>
 </div>
 </div>
 <script type="text/javascript">
@@ -94,6 +96,7 @@ var app = new Vue({
 		            }else{
 		               alert(response.data.name+"에 실패하였습니다.");
 		               alert(response.data.message);
+		               location.href='/memo/mymemo';
 		            }
 		     })
 	   }

@@ -21,15 +21,17 @@
         {{/member}}
     </div>
 	<div id = 'app'>
-		<p align="right"><a href="/registerPage"> 회원가입 </a>  &nbsp;&nbsp;
+		<p align="right">
 		{{^member}} 
+		<a href="/registerPage"> 회원가입 </a>  &nbsp;&nbsp;
 		<a href="/loginPage"> 로그인 </a> &nbsp;&nbsp;
 		 {{/member}}
 		 {{#member}}
 		<router-link to = "/route1" id = "route">게시글 조회</router-link> &nbsp;&nbsp;  
 		<router-link to = "/route4" id = "route"> 글 작성 </router-link> &nbsp;&nbsp;
-		<a v-if="'{{member.id}}' === 'admin'" href="/transAllPage">학급비 관리</a>
-		<a v-if="'{{member.id}}' === 'admin'" href="/managementMemberPage">회원 관리</a>
+		<a v-if="'{{member.id}}' === 'admin'" href="/trans/transAllPage">학급비 관리 &nbsp;&nbsp;</a> 
+		<a v-if="'{{member.id}}' === 'admin'" href="/managementMemberPage">회원 관리 &nbsp;&nbsp;</a>
+		<a href="/memo/myMemoPage"> 쪽지 보관함 &nbsp;&nbsp;</a>
 		<a href="/logoutPage"> 로그아웃 </a><br>
 		{{/member}}
 		</p> 
@@ -301,28 +303,29 @@
 	</script>
     
     <script type="text/javascript">
-	var allHumor = Vue.component('allHumor', {
-		template: '#allHumorTemplate',
-		data(){
-			return{
-			 	info : [],
-			 	loading: true,
-		        errored: false,
-		        selected : ''
-			}			
-	    },
-	    mounted () {
-	    	axios
-	        .get('/api/selectAllHumor')
-	        .then(response => (this.info = response.data))
-	         .catch(error => {
-	             console.log(error)
-	             alert(error)
-	             this.errored = true
-	         })
-	         .finally(() => this.loading = false)
-	   }
-	});
+    var allHumor = Vue.component('allHumor', {
+        template: '#allHumorTemplate',
+        data(){
+           return{
+               info : [],
+               loading: true,
+                errored: false,
+                selected : '',
+                inputStr : ''
+           }         
+         },
+         mounted () {
+            axios
+             .get('/api/selectAllHumor')
+             .then(response => (this.info = response.data))
+              .catch(error => {
+                  console.log(error)
+                  alert(error)
+                  this.errored = true
+              })
+              .finally(() => this.loading = false)
+        }
+     });
 		
 	var datailHumor = Vue.component('datailHumor',{
 	    template: '#detailTemplate',
@@ -348,7 +351,6 @@
 	  		      this.errored = true
 	  		    })
 	  		    .finally(() => this.loading = false);
-            	//
             	axios
       		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
       		        .then(response => (this.reply = response.data))
@@ -487,6 +489,7 @@
     	                  alert(response.data.total+"에 실패하였습니다.");
     	               }
                   })
+                  router.push('/route1');
              	}
 	         }
         });	
@@ -513,82 +516,6 @@
 	        } 
 	});
 	
-	/* var allReply = Vue.component('allReply', {
-		template: '#allReplyTemplate',
-		data(){
-			return{
-			 	reply : [],
-			 	loading: true,
-		        errored: false,
-		        pk : (window.location.href).split('=')[1]
-			}			
-	    },
-	    mounted () {
-	    	axios
-	        .get('/api/selectAllHumorReplyByNum/' + this.pk)
-	        .then(response => (this.reply = response.data))
-	         .catch(error => {
-	             console.log(error)
-	             alert(error)
-	             this.errored = true
-	         })
-	         .finally(() => this.loading = false)
-	   }
-	}); */
-	/* var updateReply = Vue.component('updateReply',{
-	    template: '#updateRTemplate',
-	    data(){
-	        return {
-	          loading: true,
-	          errored: false,
-	          pk : (window.location.href).split('=')[1],
-	          humor : null,
-	          hTitle : '',
-	          rContent : '',
-	          reply : []
-	        }
-	      },
-	      mounted () {
-	    	  axios
-	  		    .get('/api/selectHumorByNum/' + this.pk)
-	  		    .then(response => (this.humor = response.data))
-	  		    .catch(error => {
-	  		      console.log(error)
-	  		      this.errored = true
-	  		    })
-	  		    .finally(() => this.loading = false); 
-	    	   alert("bb"); 
-	    	 // 
-			axios
-  		        .get('/api/selectAllHumorReplyByNum/' + this.pk)
-  		        .then(response => (this.reply = response.data))
-  		         .catch(error => {
-  		             console.log(error)
-  		             this.errored = true
-  		         })
-  		         .finally(() => this.loading = false)
-	         
-	          alert("댓글 가져와"); 
-         },
-	      methods: {
-	    	    
-		      	updateReply(rPK){
-		      		 axios.post('/api/updateHumorReply',{
-		      			humorReplyPK : rPK,
-		      			humorPK : this.humor.humorPK,
-		      			humorReplyID : this.reply.humorID,
-		      			humorReplyContent: this.rContent,
-		      			humorReplyDate : this.reply.humorReplyDate
-	                  })
-	                  .then(function(response){
-	                	  router.push('/route1');
-	                      alert(response.data.total+"이 실행되었습니다.");
-	                  })
-		      	}
-	         }
-        });	 */
-	
-        
 	const routes = [  
 	   { path: '/route1', component: allHumor },
 	   { path: '/route2', component: datailHumor },
