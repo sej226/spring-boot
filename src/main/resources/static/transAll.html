@@ -92,7 +92,7 @@ var app = new Vue({
    methods:{
 	   deleteTrans(pk){
 		   axios
-	        .get('http://localhost:7788/trans/delete/'+pk)
+	        .delete('http://localhost:7788/trans/delete/'+pk)
 	        .then(function(response){
 		            if(response.data.state=='succ'){
 		               alert(response.data.name+"이 실행되었습니다.");
