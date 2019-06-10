@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+<div id="app">
+	<h2>메모 보내기</h2>
+	<form method="post" @submit.prevent="sendMemo">
+		보낼 ID <input type="text" v-model="receiverID" name="receiverID"><br>
+		제목 <input type="text" v-model="memoTitle" name="memoTitle"><br>
+		내용 <textarea name="content" cols="40" rows="8" v-model="memoContent" name="memoContent"></textarea><br>
+		<input type="submit" value="보내기">
+	</form>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+	el:"#app",
+	  data:{
+	      info : [],
+	      errored : false,
+	      loading : true,
+	      receiverID : '',
+	      memoTitle : '',
+	      memoContent : ''
+	 },
+	 methods: {
+		 sendMemo(){
+			 axios
+		        .post('http://localhost:7788/memo/send', {
+		        	receiverID : this.receiverID,
+		        	memoTitle : this.memoTitle,
+		        	memoContent : this.memoContent
+		          })
+		        .then(function(response){
+		            if(response.data.state=='succ'){
+		               alert(response.data.name+"이 실행되었습니다.");
+		               //location.href='./QandA.html';
+		            }else{
+		               alert(response.data.name+"에 실패하였습니다.");
+		               alert(response.data.message);
+		               //location.href='./QandA.html';
+		            }
+		        }) 
+		 }
+   }
+});	
+</script>
+</html>

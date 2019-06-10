@@ -11,28 +11,25 @@
 </head>
 <body class="container">
 	<div class="jumbotron">
-        <h2 align="center"> 공대 유우머 게시판</h2><br>
+        <h2>스프링 부트 게시판</h2><br>
        <!--  {{#msg}}
         {{msg}}
         {{/msg}} -->
         
         {{#member}}
-       	<h4 align="right"> <b>{{member.name}} 님</b>  환영합니다 ^^ </h4>
+       	<h4> <b>{{member.name}} 님</b>  환영합니다 ^^ </h4>
         {{/member}}
     </div>
 	<div id = 'app'>
-		<p align="right"><a href="/registerPage"> 회원가입 </a>  &nbsp;&nbsp;
+		<a href="/registerPage"> 회원가입^^! </a>  &nbsp;&nbsp; 
 		{{^member}} 
-		<a href="/loginPage"> 로그인 </a> &nbsp;&nbsp;
+		<a href="/loginPage"> LOGIN </a> &nbsp;&nbsp; 
 		 {{/member}}
-		 {{#member}}
-		<router-link to = "/route1" id = "route">게시글 조회</router-link> &nbsp;&nbsp;  
-		<router-link to = "/route4" id = "route"> 글 작성 </router-link> &nbsp;&nbsp;
-		<a v-if="'{{member.id}}' === 'admin'" href="/transAllPage">학급비 관리</a>
-		<a v-if="'{{member.id}}' === 'admin'" href="/managementMemberPage">회원 관리</a>
-		<a href="/logoutPage"> 로그아웃 </a><br>
+		 {{#member}} 
+		<a href="/logoutPage"> LOGOUT </a>   &nbsp;&nbsp; 
 		{{/member}}
-		</p> 
+		<router-link to = "/route1" id = "route">게시글 조회</router-link> &nbsp;&nbsp;  
+		<router-link to = "/route4" id = "route"> 글 작성 </router-link><br>
 		<hr>
 		<router-view></router-view>
 	</div>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.MemberDAO">
+	 <!-- 회원 가입 -->
+	<insert id="addMember" parameterType="com.boot.vo.Member">
+		INSERT
+		INTO member
+		VALUES (#{id}, #{password}, #{name}, #{grade})
+	</insert>
+	
+	<delete id="deleteMember" parameterType="string">
+		DELETE
+		FROM member
+		WHERE id = #{value}
+	</delete>
+	
+	<update id="updateMember"  parameterType="com.boot.vo.Member">
+		UPDATE
+		member
+		SET name = #{name}, grade = #{grade}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="selectAllMember" resultType="com.boot.vo.Member">
+		SELECT
+		id, name, grade
+		FROM member
+	</select>
+	
+	<select id="selectMemberByID" resultType="com.boot.vo.Member" parameterType="string">
+		SELECT
+		id, name, grade
+		FROM member
+		WHERE id = #{value}		
+	</select>
+	
+	<select id="selectHumorByName" resultType="com.boot.vo.Member" parameterType="string">
+		SELECT
+		id, name, grade
+		FROM member
+		WHERE name = #{value}
+	</select>
+	
+	<select id="selectHumorByGrade" resultType="com.boot.vo.Member" parameterType="string">
+		SELECT
+		id, name, grade
+		FROM member
+		WHERE grade = #{value}
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>학급비</title>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body class="container">
+<div id="app">
+	<div>
+		<div class="jumbotron">
+	        <h2>학급비 현황</h2>
+	    </div>
+		<h2 align="center">{{sum}}원</h2>
+		<h4 align="right"><a v-on:click="selectTransByDeposit()">입금만 검색</a> | <a v-on:click="selectTransByWithdraw()">출금만 검색</a> | <a href="./transAll.html">전체 검색</a></h4>
+		<table class="table">
+	        <tr>
+	            <th>번호</th>
+	            <th>입,출금</th>
+	            <th>금액</th>
+	            <th>날짜</th>
+	            <th> </th>
+	            <th> </th>
+	        </tr>
+	        
+			<tr v-for="trans in info">
+				<td v-html="trans.transPK"></td>
+				<td v-if="trans.dw == 0" style="color : blue;">입금</td>
+				<td v-if="trans.dw == 1" style="color : red;">출금</td>
+				<td v-if="trans.dw == 0" v-html="trans.money" style="color : blue;">{{trans.money}}</td>
+				<td v-if="trans.dw == 1" v-html="trans.money" style="color : red;">{{trans.money}}</td>
+				<td v-html="trans.transDate"></td>
+				<td><a v-on:click="deleteTrans(trans.transPK)">삭제</a></td>
+				<td>{{trans.sum | calcSum}}</td>
+			</tr>
+	    </table>
+		<nav style="text-align: center;">
+	        <ul class="pagination">
+	            <li class="disabled">
+	                <a href="#" aria-label="First">
+	                    <span aria-hidden="true">First</span>
+	                </a>
+	            </li>
+	            <li class="disabled">
+	                <a href="#" aria-label="Previous">
+	                    <span aria-hidden="true">&lt;</span>
+	                </a>
+	            </li>
+	            <li class="active"><a href="#">1</a></li>
+	            <li><a href="#">2</a></li>
+	            <li><a href="#">3</a></li>
+	            <li><a href="#">4</a></li>
+	            <li><a href="#">5</a></li>
+	            <li>
+	                <a href="#" aria-label="Next">
+	                    <span aria-hidden="true">&gt;</span>
+	                </a>
+	            </li>
+	            <li>
+	                <a href="#" aria-label="Last">
+	                    <span aria-hidden="true">Last</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+</div>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+	el:"#app",
+	data(){
+		return{
+		 	info : [],
+		 	loading: true,
+	        errored: false,
+	        sum : 0
+		}			
+    },
+    mounted () {
+    	axios
+        .get('http://localhost:7788/trans/all')
+        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+   },
+   methods:{
+	   deleteTrans(pk){
+		   axios
+	        .delete('http://localhost:7788/trans/delete/'+pk)
+	        .then(function(response){
+		            if(response.data.state=='succ'){
+		               alert(response.data.name+"이 실행되었습니다.");
+		               location.href='./transAll.html';
+		            }else{
+		               alert(response.data.name+"에 실패하였습니다.");
+		               alert(response.data.message);
+		               //location.href='./QandA.html';
+		            }
+		     })
+	   },
+	   selectTransByDeposit(){
+		   axios
+	        .get('http://localhost:7788/trans/deposit')
+	        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+	   },
+	   selectTransByWithdraw(){
+		   axios
+	        .get('http://localhost:7788/trans/withdraw')
+	        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+	   }
+   },
+   filters:{
+	   calcSum(value){
+		   if(value < 0){
+			   app.sum = 0;
+		   }
+		   else{
+			   app.sum = value;
+		   }
+		   
+	   }
+	   
+   }
+});
+</script>
+</body>
+</html>

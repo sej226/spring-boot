@@ -28,8 +28,6 @@ public class LoginController {
 	
 	@RequestMapping("/registerPage") 
 	public String registerPage( ) { 
-		/*session.setAttribute("member", "문용성ㅋ");
-		model.addAttribute("msg", "나와라고");*/
 		return "regForm";
 	}
 	
@@ -52,7 +50,6 @@ public class LoginController {
 			memberService.addMember(member);
 			model.addAttribute("msg", "환영합니다!");
 		}
-		
 		
 		session.setAttribute("member", member);
 //		model.addAttribute("msg", "나와라고");

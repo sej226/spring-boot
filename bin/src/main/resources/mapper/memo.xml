@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.MemoDAO">
+
+	<insert id="sendMemo" parameterType="com.boot.vo.Memo">
+		INSERT
+		INTO memo (receiverID, senderID, memoTitle, memoContent, memoDate)
+		VALUES (#{receiverID}, #{senderID}, #{memoTitle},  #{memoContent},  curdate())
+	</insert>
+	
+	<delete id="deleteMemo" parameterType="int">
+		DELETE
+		FROM memo
+		WHERE memoPK = #{value}
+	</delete>
+	
+	<!-- 쪽지 수신인으로 검색  -->
+	<select id="selectMemoByReceiverID" resultType="com.boot.vo.Memo" parameterType="string">
+		SELECT
+		memoPK, senderID, memoTitle, memoContent, memoDate
+		FROM memo
+		WHERE receiverID = #{value}
+	</select>
+	
+	<!-- 쪽지 PK 검색 -->
+	<select id="selectMemoByMemoPK" resultType="com.boot.vo.Memo" parameterType="int">
+		SELECT receiverID, senderID, memoTitle, memoContent, memoDate
+		FROM memo
+		WHERE memoPK = #{value}	
+	</select>
+	
+</mapper>
+

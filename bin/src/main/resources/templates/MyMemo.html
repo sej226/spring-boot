@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>나의 메모</title>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body class="container">
+<div id="app">
+	<div>
+		<div class="jumbotron">
+	        <h2>내 메모 보기</h2>
+	    </div>
+		<table class="table">
+	        <tr>
+	            <th>보낸이</th>
+	            <th>제목</th>
+	            <th>내용</th>
+	            <th>시간</th>
+	            <th> </th>
+	        </tr>
+	        
+			<tr v-for="memo in info">
+				<td v-html="memo.senderID"></td>
+				<td v-html="memo.memoTitle"></td>
+				<td v-html="memo.memoContent"></td>
+				<td v-html="memo.memoDate"></td>
+				<td><a v-on:click="deleteMemo(memo.memoPK)">삭제</a></td>
+			</tr>
+	    </table>
+		<nav style="text-align: center;">
+	        <ul class="pagination">
+	            <li class="disabled">
+	                <a href="#" aria-label="First">
+	                    <span aria-hidden="true">First</span>
+	                </a>
+	            </li>
+	            <li class="disabled">
+	                <a href="#" aria-label="Previous">
+	                    <span aria-hidden="true">&lt;</span>
+	                </a>
+	            </li>
+	            <li class="active"><a href="#">1</a></li>
+	            <li><a href="#">2</a></li>
+	            <li><a href="#">3</a></li>
+	            <li><a href="#">4</a></li>
+	            <li><a href="#">5</a></li>
+	            <li>
+	                <a href="#" aria-label="Next">
+	                    <span aria-hidden="true">&gt;</span>
+	                </a>
+	            </li>
+	            <li>
+	                <a href="#" aria-label="Last">
+	                    <span aria-hidden="true">Last</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+</div>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+	el:"#app",
+	data(){
+		return{
+		 	info : [],
+		 	loading: true,
+	        errored: false,
+	        sum : 0
+		}			
+    },
+    mounted () {
+    	axios
+        .get('http://localhost:7788/memo/selectID')
+        .then(response => (this.info = response.data))
+         .catch(error => {
+             console.log(error)
+             alert(error)
+             this.errored = true
+         })
+         .finally(() => this.loading = false)
+   },
+   methods:{
+	   deleteMemo(pk){
+		   axios
+	        .delete('http://localhost:7788/memo/delete/'+pk)
+	        .then(function(response){
+		            if(response.data.state=='succ'){
+		               alert(response.data.name+"이 실행되었습니다.");
+		               location.href='/memo/mymemo';
+		            }else{
+		               alert(response.data.name+"에 실패하였습니다.");
+		               alert(response.data.message);
+		            }
+		     })
+	   }
+   }
+   
+});
+</script>
+</body>
+</html>
