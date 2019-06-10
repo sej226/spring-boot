@@ -8,20 +8,27 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 	<!--  라우터 라이브러리 추가   -->
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-  <!-- vues 설치 -->
-	<script src="/path/to/vue.js"></script>
-	<script src="/path/to/vuex.js"></script>
 </head>
 <body class="container">
+	<div class="jumbotron">
+        <h2>스프링 부트 게시판</h2>
+        {{#msg}}
+        {{msg}}
+        {{/msg}}
+        
+        {{#member}}
+        {{member.name}} 
+        {{/member}}
+    </div>
 	<div id = 'app'>
-		<router-link to = "/route1" id = "route">게시글 조회</router-link>
+		<a href="/registerPage"> 회원가입^^! </a>  &nbsp;&nbsp;  
+		<a href="/loginPage"> LOGIN </a> &nbsp;&nbsp; 
+		<router-link to = "/route1" id = "route">게시글 조회</router-link> &nbsp;&nbsp;  
+		<router-link to = "/route4" id = "route"> 글 작성 </router-link>
 		<router-view></router-view>
 	</div>
 	<script type="text/x-template" id = "allHumorTemplate">
 		<div>
-		<div class="jumbotron">
-	        <h2>스프링 부트 게시판</h2>
-	    </div>
 		<select v-model="selected">
     		<option disabled value="">Please select one</option>
     		<option>ID</option>
@@ -83,16 +90,11 @@
 	        </ul>
 	    </nav>
 	<router-link to = "/route4" id = "route"> 글 작성 </router-link>
-
-<a href="./regForm.html"> 회원가입^^ </a>
 </div>
 	</script>
 	
 	<script type="text/x-template" id="detailTemplate">
 	<div>
-		<div class="jumbotron">
-	        <h2>스프링 부트 게시판</h2>
-	    </div>
  		<table class="table">
 		<tr>
 			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>
@@ -122,9 +124,9 @@
 			</tr>
 			<tr v-if="flag > 0"> 
 				<br><br><br>
-				<td> 댓글 수정  : {{flag}}</td>
+				<td> 댓글 수정  : </td>
 				<input type="text" v-model="rContent" placeholder="댓글을 수정하세요."/>
-				{{rContent}}
+				
 				<a v-on:click="updateR(rContent)">댓글 수정</a><br>
 			</tr>
 	    </table>
@@ -172,9 +174,6 @@
 	</script>
 	<script type="text/x-template" id="findTemplate">
   		<div>
-		<div class="jumbotron">
-	        <h2>스프링 부트 게시판</h2>
-	    </div>
 		<select v-model="selected">
     		<option disabled value="">Please select one</option>
     		<option>ID</option>
@@ -255,9 +254,6 @@
 	
 	<script type="text/x-template" id="updateRTemplate">
 	<div>
-		<div class="jumbotron">
-	        <h2>스프링 부트 게시판 - 댓글 수정</h2>
-	    </div>
  		<table class="table">
 		<tr>
 			<th style="font-size: 20px;">제목</th><td ><p v-html="humor.humorTitle"></p></td>

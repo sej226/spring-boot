@@ -1,45 +1,107 @@
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Signin Template for Bootstrap</title>
-    <!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+	<!--  라우터 라이브러리 추가   -->
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
 
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<style>
+	p, h1, form, button{border:0; margin:0; padding:0;}
+	.spacer{clear:both; height:1px;}
+	
+	.myform{
+		margin:10px;
+		width:400px;
+		padding:14px;
+	}
+	
+	#stylized{
+		border:solid 2px #b7ddf2;
+		background:#ebf4fb;
+	}
+	#stylized h1 {
+		font-size:16px;
+		font-weight:bold;
+		margin-bottom:8px;
+		font-family:nanumgothic,dotum;
+	
+	}
+	#stylized p{
+		font-size:11px;
+		color:#666666;
+		margin-bottom:20px;
+		border-bottom:solid 1px #b7ddf2;
+		padding-bottom:10px;
+		font-family:dotum;
+	}
+	#stylized label{
+		display:block;
+		font-weight:bold;
+		text-align:right;
+		width:140px;
+		float:left;
+		font-family:tahoma;
+	}
+	#stylized .small{
+		color:#666666;
+		display:block;
+		font-size:11px;
+		font-weight:normal;
+		text-align:right;
+		width:140px;
+		font-family:dotum;
+		letter-spacing:-1px;
+	}
+	#stylized input{
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:solid 1px #aacfe4;
+	width:200px;
+	margin:2px 0 20px 10px;
+	}
+	#stylized button{
+	clear:both;
+	margin-left:150px;
+	width:125px;
+	height:31px;
+	text-align:center;
+	line-height:31px;
+	background-color:#000;
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+	font-family:tahoma;
+	}
+</style>
 
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  </head>
 
-  <body>
-
-    <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+<div id="stylized" class="myform">
+	<form action="/registerMember"  id="form" name="form" method="post">
+		<h1>글쓰기 폼</h1>
+		<p>기본적인 입력폼입니다.</p>
+		
+		<label>Name
+		<span class="small">이름 입력</span>
+		</label>
+		<input type="text" name="name" id="name" />
+		
+		<label>Email
+		<span class="small">이메일주소</span>
+		</label>
+		<input type="text" name="id" id="id" />
+		
+		<label>Password
+		<span class="small">패스워드 6자 이상</span>
+		</label>
+		<input type="text" name="password" id="password"/>
+		
+		<button type="submit">Sign-up</button>
+		<div class="spacer"></div>
+	</form>
+</div>
