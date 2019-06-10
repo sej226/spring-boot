@@ -7,7 +7,7 @@
 
 	<insert id="sendMemo" parameterType="com.boot.vo.Memo">
 		INSERT
-		INTO memo
+		INTO memo (receiverID, senderID, memoTitle, memoContent, memoDate)
 		VALUES (#{receiverID}, #{senderID}, #{memoTitle},  #{memoContent},  curdate())
 	</insert>
 	
@@ -20,7 +20,7 @@
 	<!-- 쪽지 수신인으로 검색  -->
 	<select id="selectMemoByReceiverID" resultType="com.boot.vo.Memo" parameterType="string">
 		SELECT
-		senderID, memoTitle, memoContent, memoDate
+		memoPK, senderID, memoTitle, memoContent, memoDate
 		FROM memo
 		WHERE receiverID = #{value}
 	</select>

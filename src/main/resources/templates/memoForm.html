@@ -10,9 +10,9 @@
 <div id="app">
 	<h2>메모 보내기</h2>
 	<form method="post" @submit.prevent="sendMemo">
-		보낼 ID <input type="text" v-model="receiverid" name="receiverid"><br>
-		제목 <input type="text" v-model="title" name="title"><br>
-		내용 <textarea name="content" cols="40" rows="8" v-model="content" name="content"></textarea><br>
+		보낼 ID <input type="text" v-model="receiverID" name="receiverID"><br>
+		제목 <input type="text" v-model="memoTitle" name="memoTitle"><br>
+		내용 <textarea name="content" cols="40" rows="8" v-model="memoContent" name="memoContent"></textarea><br>
 		<input type="submit" value="보내기">
 	</form>
 </div>
@@ -23,17 +23,17 @@ var app = new Vue({
 	      info : [],
 	      errored : false,
 	      loading : true,
-	      dw : 1,
-	      money : '',
-	      transDate : ''
+	      receiverID : '',
+	      memoTitle : '',
+	      memoContent : ''
 	 },
 	 methods: {
 		 sendMemo(){
 			 axios
 		        .post('http://localhost:7788/memo/send', {
-		        	receiverid : this.receiverid,
-		        	title : this.title,
-		        	content : this.content
+		        	receiverID : this.receiverID,
+		        	memoTitle : this.memoTitle,
+		        	memoContent : this.memoContent
 		          })
 		        .then(function(response){
 		            if(response.data.state=='succ'){

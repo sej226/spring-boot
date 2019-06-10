@@ -15,7 +15,6 @@
 	    </div>
 		<table class="table">
 	        <tr>
-	            <th>번호</th>
 	            <th>보낸이</th>
 	            <th>제목</th>
 	            <th>내용</th>
@@ -24,12 +23,11 @@
 	        </tr>
 	        
 			<tr v-for="memo in info">
-				<td v-html="memo.memoPK"></td>
 				<td v-html="memo.senderID"></td>
 				<td v-html="memo.memoTitle"></td>
 				<td v-html="memo.memoContent"></td>
-				<td v-html="trans.transDate"></td>
-				<td><a v-on:click="deleteTrans(trans.transPK)">삭제</a></td>
+				<td v-html="memo.memoDate"></td>
+				<td><a v-on:click="deleteMemo(memo.memoPK)">삭제</a></td>
 			</tr>
 	    </table>
 		<nav style="text-align: center;">
@@ -76,7 +74,7 @@ var app = new Vue({
     },
     mounted () {
     	axios
-        .get('http://localhost:7788/trans/all')
+        .get('http://localhost:7788/memo/selectID')
         .then(response => (this.info = response.data))
          .catch(error => {
              console.log(error)
@@ -86,55 +84,21 @@ var app = new Vue({
          .finally(() => this.loading = false)
    },
    methods:{
-	   deleteTrans(pk){
+	   deleteMemo(pk){
 		   axios
-	        .delete('http://localhost:7788/trans/delete/'+pk)
+	        .delete('http://localhost:7788/memo/delete/'+pk)
 	        .then(function(response){
 		            if(response.data.state=='succ'){
 		               alert(response.data.name+"이 실행되었습니다.");
-		               location.href='./transAll.html';
+		               location.href='/memo/mymemo';
 		            }else{
 		               alert(response.data.name+"에 실패하였습니다.");
 		               alert(response.data.message);
-		               //location.href='./QandA.html';
 		            }
 		     })
-	   },
-	   selectTransByDeposit(){
-		   axios
-	        .get('http://localhost:7788/trans/deposit')
-	        .then(response => (this.info = response.data))
-         .catch(error => {
-             console.log(error)
-             alert(error)
-             this.errored = true
-         })
-         .finally(() => this.loading = false)
-	   },
-	   selectTransByWithdraw(){
-		   axios
-	        .get('http://localhost:7788/trans/withdraw')
-	        .then(response => (this.info = response.data))
-         .catch(error => {
-             console.log(error)
-             alert(error)
-             this.errored = true
-         })
-         .finally(() => this.loading = false)
 	   }
-   },
-   filters:{
-	   calcSum(value){
-		   if(value < 0){
-			   app.sum = 0;
-		   }
-		   else{
-			   app.sum = value;
-		   }
-		   
-	   }
-	   
    }
+   
 });
 </script>
 </body>
