@@ -34,20 +34,6 @@ public class MainController {
    @Autowired
    private HumorreplyService humorreplyService;
 
-  /* @RequestMapping(value = "/addHumor", method = RequestMethod.POST)
-   public ResponseEntity<BoolResult> addHumor(@RequestBody Humor humor) throws Exception {
-      logger.info("1. -------------addHumor-------------"+humor+" : "+new Date());
-
-      boolean total = humorService.addHumor(humor);
-      BoolResult nr = new BoolResult();
-      nr.setCount(total);
-      nr.setName("addHumor");
-      nr.setState("success");
-      if (!total) {
-         return new ResponseEntity(HttpStatus.NO_CONTENT);
-      }
-      return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
-   }*/
    
    @RequestMapping(value = "/selectAllHumor", method =  RequestMethod.GET)
    public ResponseEntity<List<Humor>> selectAllHumor() throws Exception {
