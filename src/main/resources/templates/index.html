@@ -12,10 +12,7 @@
 <body class="container">
 	<div class="jumbotron">
         <h2 align="center"> 공대 유우머 게시판</h2><br>
-       <!--  {{#msg}}
-        {{msg}}
-        {{/msg}} -->
-        
+ 
         {{#member}}
        	<h4 align="right"> <b>{{member.name}} 님</b>  환영합니다 ^^ </h4>
         {{/member}}
@@ -58,7 +55,8 @@
 	        </tr>
 			<tr v-for="text in info">
 				<td v-html="text.humorPK"></td>
-				<td v-html="text.humorID"></td>
+				<td  v-if="text.anonymous === true" v-html="text.humorID"></td>
+				<td v-else>   NULL   </td>
 				<router-link v-bind:to = "{path:'route2?pk='+ text.humorPK}" > 
 				<td v-html="text.humorTitle"></td> </router-link>
 				<td v-html="text.humorDate"></td>
@@ -111,29 +109,37 @@
 			<th style="font-size: 20px;">제목 </th><td ><p v-html="humor.humorTitle"></p></td>
 		</tr>
   	    <tr>
-			<th style="font-size: 20px;">작성자</th><td ><p v-html="humor.humorID"></p></td>
+			<th style="font-size: 20px;">작성자</th>
+			<td v-if="humor.anonymous === true" ><p v-html="humor.humorID"></p></td>
+			<td v-else>   NULL   </td>
 		</tr>
  		<tr>
 			<th style="font-size: 20px;">내용</th><td ><p v-html="humor.humorContent"></p></td>
  		</tr>
   		</table>
-		
 		{{#member}}
-			<div v-if="{{member.id}} == humor.humorID">
+			<div v-if="'{{member.id}}' === humor.humorID">
 				<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
 				<a v-on:click="deleteH"> 삭제   </a>	
 			</div>
+			<div v-else-if="'{{member.id}}' === 'admin'">
+				<router-link v-bind:to = "{path:'route3?pk='+ humor.humorPK}" > 수정  | </router-link>
+				<a v-on:click="deleteH"> 삭제   </a>
+			</div>
        	{{/member}}
 	<hr>
-	댓글 창
+	<h4>[ 댓글 창 ]</h4> <br>
 	<div v-if="reply != null">
 		<table class="table">
 			<tr v-for="r in reply">
-				<img src="./img/user.png" width="45px" height="45px">
 				<td v-html="r.humorReplyID"></td>
 				<td v-html="r.humorReplyContent"></td> 
 				{{#member}}
-					<div v-if="{{member.id}} == r.humorReplyID">
+					<div v-if="'{{member.id}}' === r.humorReplyID">
+						<a v-on:click="flag = r.humorReplyPK"> 수정  | </a>
+						<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a>
+					</div>
+					<div v-else-if="'{{member.id}}' === 'admin'">
 						<a v-on:click="flag = r.humorReplyPK"> 수정  | </a>
 						<a v-on:click="deleteR(r.humorReplyPK)"> 삭제   </a>
 					</div>
@@ -258,8 +264,13 @@
 	<script type= "text/x-template" id = "createTemplate">
 	<div>
 		<form method = "post" id = "_frmForm" name = "frmForm" @submit.prevent="createH">
- 	 	 <fieldset>
-  		 <legend>질문등록 :</legend>
+ 	 	<fieldset>
+  		<legend>질문등록    </legend>
+		<input type="checkbox" id="checkbox" v-model="checked">
+  		<label for="checkbox">  익명 </label><br>
+		<div v-if="checked">
+	 		익명으로 작성 ^^
+		</div>
    		제목 : <input type = "text" name = "humorTitle" v-model="hTitle "><br><br>
   		 내용 : <input type = "text" name = "humorContent" v-model="hContent "><br><br>
 			<button type="submit" name = "button">질문 등록</button>   
@@ -469,8 +480,10 @@
 	          hContent : '',
 	          hDate : '',
 	          hCount : 0,
-	          humorImgURL : ''
+	          humorImgURL : '',
+	          checked : false
 	        }
+	        
 	      },
 	      methods: {
              createH(){
@@ -480,7 +493,8 @@
                 	humorContent: this.hContent,
                 	humorDate : this.hDate,
                 	humorCount : this.hCount,
-                	humorImgURL : this.humorImgURL
+                	humorImgURL : this.humorImgURL,
+                	anonymous : checked
                   })
                   .then(function(response){
                 	  if(response.data.state=='succ'){

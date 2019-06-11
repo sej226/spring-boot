@@ -91,7 +91,9 @@ public class MainController {
    public void createA(@RequestBody Humor humor, HttpServletRequest request) throws Exception {
       logger.info("-------------create-----------------------------"+new Date());
       System.out.println(humor);
-      
+      /*if(humor.isAnonymous()) {
+    	 humor.setHumorID(""); 
+      }*/
       /*SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
       Date time = new Date();
       String time1 = format.format(time);

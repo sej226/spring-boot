@@ -10,6 +10,7 @@ public class Humor {
 	private Date humorDate;
 	private int humorCount;
 	private String humorImgURL;
+	private boolean anonymous;
 	
 	public Humor() {}
 	
@@ -24,8 +25,9 @@ public class Humor {
 		this.humorImgURL = humorImgURL;
 	}
 	
+ 
 	public Humor(int humorPK, String humorID, String humorTitle, String humorContent, Date humorDate, int humorCount,
-			String humorImgURL) {
+			String humorImgURL, boolean anonymous) {
 		super();
 		this.humorPK = humorPK;
 		this.humorID = humorID;
@@ -34,8 +36,8 @@ public class Humor {
 		this.humorDate = humorDate;
 		this.humorCount = humorCount;
 		this.humorImgURL = humorImgURL;
+		this.anonymous = anonymous;
 	}
-
 
 	public int getHumorPK() {
 		return humorPK;
@@ -100,18 +102,27 @@ public class Humor {
 	public String getHumorImgURL() {
 		return humorImgURL;
 	}
-
+	
 
 	public void setHumorImgURL(String humorImgURL) {
 		this.humorImgURL = humorImgURL;
 	}
 
+	public boolean isAnonymous() {
+		return anonymous;
+	}
+
+	
+	 
+	public void setAnonymous(boolean anonymous) {
+		this.anonymous = anonymous;
+	}
 
 	@Override
 	public String toString() {
-		return "humor [humorPK=" + humorPK + ", humorID=" + humorID + ", humorTitle=" + humorTitle + ", humorContent="
+		return "Humor [humorPK=" + humorPK + ", humorID=" + humorID + ", humorTitle=" + humorTitle + ", humorContent="
 				+ humorContent + ", humorDate=" + humorDate + ", humorCount=" + humorCount + ", humorImgURL="
-				+ humorImgURL + "]";
+				+ humorImgURL + ", anonymous=" + anonymous + "]";
 	}
 	
 	

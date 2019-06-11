@@ -9,7 +9,38 @@
 	<!--  라우터 라이브러리 추가   -->
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 </head>
-
+<script type="text/javascript">
+	function validate(){
+		var name = document.getElementById("name");
+		var id = document.getElementById("id");
+		var password = document.getElementById("password");
+		if(name.value=="") {
+	           alert("name을 입력해 주세요");
+	           name.focus();
+	           return false;
+	     }
+		if(id.value=="") {
+	           alert("id 입력해 주세요");
+	           id.focus();
+	           return false;
+	     }
+		if(password.value=="") {
+	           alert("password 입력해 주세요");
+	           password.focus();
+	           return false;
+	     }
+	}
+	
+	function check(re, what, message) {
+	       if(re.test(what.value)) {
+	           return true;
+	       }
+	       alert(message);
+	       what.value = "";
+	       what.focus();
+	}
+	
+</script>
 <style>
 	p, h1, form, button{border:0; margin:0; padding:0;}
 	.spacer{clear:both; height:1px;}
@@ -80,12 +111,9 @@
 	}
 </style>
 
-
 <div id="stylized" class="myform">
-	<form action="/registerMember"  id="form" name="form" method="post">
+	<form action="/registerMember"  onsubmit="return validate();" id="form" name="form" method="post">
 		<h1>글쓰기 폼</h1>
-		<p>기본적인 입력폼입니다.</p>
-		
 		<label>Name
 		<span class="small">이름 입력</span>
 		</label>
